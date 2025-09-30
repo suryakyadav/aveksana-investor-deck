@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aveksana: The Discovery Engine</title>
+    <!-- Chosen Palette: Calm Harmony (Warm Neutrals & Deep Teal) -->
+    <!-- Application Structure Plan: A dashboard-style single-page scroll with sticky navigation. Combines related pitch deck slides into thematic sections (e.g., Problem/Solution, Competition/Business Model) for a more fluid narrative. The goal is non-linear exploration, allowing investors to jump to key data points like Traction and The Ask, which are made highly visual with interactive charts and counters. -->
+    <!-- Visualization & Content Choices: Problem Stats -> Inform -> Animated Counters -> JS/IntersectionObserver -> Emphasize scale of the problem. Use of Funds -> Inform -> Interactive Donut Chart -> Chart.js -> Clearly visualize investment allocation. Competition -> Compare -> CSS Grid with Hover Effects -> HTML/CSS/JS -> Interactively showcase unique market position. Traction -> Inform -> Animated Counters & Logos -> JS/HTML -> Build immediate credibility. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #1f2937;
+        }
+        .nav-link.active {
+            color: #0d9488;
+            font-weight: 600;
+        }
+        .stat-card, .market-card, .model-card, .why-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover, .market-card:hover, .model-card:hover, .why-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .quadrant {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .quadrant:hover {
+            transform: scale(1.03);
+            background-color: #f0fdfa;
+        }
+        .team-card {
+            transition: box-shadow 0.3s ease;
+        }
+        .team-card:hover {
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            max-width: 300px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body class="bg-stone-50">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-stone-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold text-teal-700">Aveksana</a>
+            <div class="hidden md:flex space-x-6 lg:space-x-8">
+                <a href="#opportunity" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Opportunity</a>
+                <a href="#product" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Product</a>
+                 <a href="#market" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Market</a>
+                <a href="#traction" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Traction</a>
+                <a href="#team" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Team</a>
+                <a href="#ask" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">The Ask</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 md:py-20">
+
+        <section id="hero" class="text-center mb-24 md:mb-32">
+            <h2 class="text-4xl md:text-6xl font-extrabold text-gray-800 leading-tight">The Discovery Engine</h2>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Fueling breakthroughs for students, researchers, and corporations by fixing the single biggest bottleneck to innovation.</p>
+        </section>
+
+        <section id="opportunity" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The ROI on Research is Broken</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Globally, we invest heavily in R&D, but the returns are stifled by an archaic discovery process.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="stat-card p-8 rounded-xl text-center">
+                    <p class="text-5xl md:text-6xl font-extrabold text-teal-700" data-counter-target="238000" data-prefix="$" data-suffix="k+">0</p>
+                    <p class="mt-2 text-lg text-gray-600 font-semibold">Invested Per Researcher, Annually</p>
+                    <p class="mt-2 text-gray-500">A massive capital injection meant to fuel innovation.</p>
+                </div>
+                <div class="stat-card p-8 rounded-xl text-center">
+                    <p class="text-5xl md:text-6xl font-extrabold text-teal-700" data-counter-target="40" data-suffix="%">0</p>
+                    <p class="mt-2 text-lg text-gray-600 font-semibold">Time Wasted by Researchers</p>
+                    <p class="mt-2 text-gray-500">Lost to redundant discovery & administrative tasks. <br><span class="text-xs italic">(Source: U.S. FDP, Nature Journal)</span></p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-stone-200 rounded-xl p-8 md:p-12 text-center">
+                 <h4 class="text-2xl md:text-3xl font-bold text-teal-800">Our Solution: The Research Ideation Engine</h4>
+                 <p class="mt-4 text-lg text-gray-700 max-w-4xl mx-auto">Aveksana is an AI-powered platform that transforms the messy start of research into structured, accelerated discovery. Our proprietary algorithm combines a knowledge graph and a gap validation engine to analyze over 500 million articles, identifying novel connections and turning them into validated research topics.</p>
+                 <div class="mt-8 grid md:grid-cols-3 gap-8 text-left">
+                     <div class="bg-teal-50 p-6 rounded-lg">
+                         <h5 class="font-bold text-lg text-teal-900">For Students & Researchers</h5>
+                         <p class="text-teal-800 mt-1">We provide clarity, turning information overload into a structured path for creating novel, high-impact research proposals.</p>
+                     </div>
+                     <div class="bg-teal-50 p-6 rounded-lg">
+                         <h5 class="font-bold text-lg text-teal-900">For Universities</h5>
+                         <p class="text-teal-800 mt-1">We boost research output and enhance institutional competitiveness by empowering faculty and students to innovate more effectively.</p>
+                     </div>
+                     <div class="bg-teal-50 p-6 rounded-lg">
+                         <h5 class="font-bold text-lg text-teal-900">For Corporate R&D</h5>
+                         <p class="text-teal-800 mt-1">We drive efficiency, accelerating the R&D lifecycle and maximizing the return on innovation investment.</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="product" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">From Idea to Insight, Faster</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our platform guides users through a simple, powerful workflow to accelerate discovery.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="stat-card p-6 rounded-xl flex flex-col">
+                    <!-- Step 1 Image - Corrected Path -->
+                    <img src="images/step-1-input.png" alt="Step 1: User inputs a research topic" class="rounded-md w-full mb-6 border">
+                    <div class="text-2xl font-bold text-teal-600 mb-4">01</div>
+                    <h4 class="text-xl font-bold text-gray-800">Start with a Theme</h4>
+                    <p class="mt-2 text-gray-600">A user inputs a broad area of interest. Our platform guides them to define and refine the scope of their inquiry.</p>
+                </div>
+                 <div class="stat-card p-6 rounded-xl flex flex-col">
+                    <!-- Step 2 Image - Corrected Path -->
+                    <img src="images/step-2-suggestions.png" alt="Step 2: AI generates novel topic suggestions" class="rounded-md w-full mb-6 border">
+                    <div class="text-2xl font-bold text-teal-600 mb-4">02</div>
+                    <h4 class="text-xl font-bold text-gray-800">Discover Novel Topics</h4>
+                    <p class="mt-2 text-gray-600">Our AI engine analyzes 500M+ articles to generate unique research topics, each grounded in a validated knowledge gap.</p>
+                </div>
+                 <div class="stat-card p-6 rounded-xl flex flex-col">
+                    <!-- Step 3 Image - Corrected Path -->
+                    <img src="images/step-3-editor.png" alt="Step 3: User develops the topic in an editor" class="rounded-md w-full mb-6 border">
+                    <div class="text-2xl font-bold text-teal-600 mb-4">03</div>
+                    <h4 class="text-xl font-bold text-gray-800">Develop & Collaborate</h4>
+                    <p class="mt-2 text-gray-600">The user develops their chosen topic into a strong proposal using guided templates and collaborates seamlessly with their team.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="market" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">A Multi-Billion Euro Opportunity</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We are targeting a massive, underserved segment of the global R&D software and services market.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="market-card p-8 rounded-xl">
+                    <h4 class="text-2xl font-bold text-gray-800">TAM</h4>
+                    <p class="text-4xl font-extrabold text-teal-700 mt-2">€20B+</p>
+                    <p class="mt-2 text-gray-600">Total Addressable Market</p>
+                    <p class="text-sm text-gray-500">(Global R&D Software & Services)</p>
+                </div>
+                 <div class="market-card p-8 rounded-xl">
+                    <h4 class="text-2xl font-bold text-gray-800">SAM</h4>
+                    <p class="text-4xl font-extrabold text-teal-700 mt-2">€5-7B</p>
+                    <p class="mt-2 text-gray-600">Serviceable Addressable Market</p>
+                    <p class="text-sm text-gray-500">(OECD Higher Ed & Corp R&D)</p>
+                </div>
+                 <div class="market-card p-8 rounded-xl">
+                    <h4 class="text-2xl font-bold text-gray-800">SOM</h4>
+                    <p class="text-4xl font-extrabold text-teal-700 mt-2">€100M+</p>
+                    <p class="mt-2 text-gray-600">Serviceable Obtainable Market</p>
+                    <p class="text-sm text-gray-500">(Our 5-year ARR target)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="business-model" class="mb-24 md:mb-32 scroll-mt-20">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Multiple Paths to Revenue</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our hybrid model combines high-volume B2C subscriptions with high-value B2B licenses.</p>
+            </div>
+             <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="model-card p-8 rounded-xl">
+                    <h4 class="text-xl font-bold text-gray-800">B2C Subscriptions</h4>
+                     <p class="text-2xl font-bold text-teal-700 mt-3">€19.90/mo</p>
+                    <p class="mt-2 text-gray-600">For students and individual researchers. Creates our viral acquisition loop.</p>
+                </div>
+                <div class="model-card p-8 rounded-xl border-2 border-teal-600">
+                    <h4 class="text-xl font-bold text-gray-800">Institutional Licenses</h4>
+                     <p class="text-2xl font-bold text-teal-700 mt-3">€10-50k/yr</p>
+                    <p class="mt-2 text-gray-600">For universities, priced per faculty/student. Our core revenue driver.</p>
+                </div>
+                <div class="model-card p-8 rounded-xl">
+                    <h4 class="text-xl font-bold text-gray-800">Enterprise Solutions</h4>
+                     <p class="text-2xl font-bold text-teal-700 mt-3">Custom</p>
+                    <p class="mt-2 text-gray-600">For corporate R&D, with custom pricing, integrations, and support.</p>
+                </div>
+            </div>
+        </section>
+
+         <section id="why-now" class="mb-24 md:mb-32 scroll-mt-20">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The Perfect Storm for Innovation</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Market forces have aligned to create an unprecedented demand for a tool like Aveksana.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="why-card p-8 rounded-xl">
+                    <h4 class="text-xl font-bold text-gray-800">Explosive AI Adoption</h4>
+                    <p class="mt-2 text-gray-600">Institutions are actively seeking AI tools to gain a competitive edge and improve efficiency.</p>
+                </div>
+                <div class="why-card p-8 rounded-xl">
+                    <h4 class="text-xl font-bold text-gray-800">Record R&D Investment</h4>
+                    <p class="mt-2 text-gray-600">Global R&D spending is at an all-time high, demanding greater accountability and results.</p>
+                </div>
+                <div class="why-card p-8 rounded-xl">
+                    <h4 class="text-xl font-bold text-gray-800">The Innovation Imperative</h4>
+                    <p class="mt-2 text-gray-600">Corporations and universities are under immense pressure to accelerate their pace of innovation.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="traction" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Proving Product-Market Fit</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our organic growth and early B2B validation demonstrate a clear and urgent market need.</p>
+            </div>
+
+            <div class="bg-white border border-stone-200 rounded-xl">
+                <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-stone-200">
+                    <div class="p-8">
+                        <h4 class="text-2xl font-bold text-teal-800 mb-6 text-center">B2C Organic Growth Engine</h4>
+                        <div class="space-y-6">
+                            <div class="text-center">
+                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="22000" data-suffix="+">0</p>
+                                <p class="text-md text-gray-600 font-semibold">Users Acquired Organically</p>
+                                <p class="text-sm text-gray-500">(Zero marketing spend)</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="100" data-suffix="+">0</p>
+                                <p class="text-md text-gray-600 font-semibold">Daily Sign-ups</p>
+                                 <p class="text-sm text-gray-500">(Purely word-of-mouth)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-2xl font-bold text-teal-800 mb-6 text-center">B2B Validation</h4>
+                        <div class="space-y-6 text-center">
+                            <div>
+                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="3000" data-prefix="€" data-suffix="+">0</p>
+                                <p class="text-md text-gray-600 font-semibold">Revenue from University Pilots</p>
+                            </div>
+                            <div>
+                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="4">0</p>
+                                <p class="text-md text-gray-600 font-semibold">Active & Completed Pilots</p>
+                            </div>
+                             <div class="mt-4 flex justify-center items-center space-x-4 grayscale opacity-75">
+                                 <p class="font-bold">Tampere University</p>
+                                 <p class="font-bold">Aalto University</p>
+                                 <p class="font-bold">VAMK</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="edge" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">A New Market Category</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We're not another search tool or a generalist AI. We created a specialized workflow for research ideation.</p>
+            </div>
+            <div class="relative p-8 border-2 border-dashed border-stone-300 rounded-xl">
+                 <div class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 transform rotate-90 font-semibold text-gray-500">AI-Powered Discovery &uarr;</div>
+                 <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full font-semibold text-gray-500">Specialized Workflow &rarr;</div>
+                <div class="grid grid-cols-2 grid-rows-2 gap-4">
+                    <div class="quadrant border border-stone-200 rounded-lg p-6 bg-white">
+                        <h5 class="font-bold text-lg text-gray-800">General Purpose Tools</h5>
+                        <p class="text-gray-600 mt-1">Perplexity, ChatGPT</p>
+                        <p class="text-sm text-gray-500 mt-2 italic">Good for answers, not for identifying novel research gaps.</p>
+                    </div>
+                    <div class="quadrant border-2 border-teal-600 bg-teal-50 rounded-lg p-6 shadow-lg">
+                        <h5 class="font-bold text-lg text-teal-800">Aveksana</h5>
+                        <p class="text-teal-700 mt-1">Specialized Research Workflow</p>
+                        <p class="text-sm text-teal-600 mt-2 italic">Unique position in AI-powered research gap discovery and proposal development.</p>
+                    </div>
+                    <div class="quadrant border border-stone-200 rounded-lg p-6 bg-white">
+                        <h5 class="font-bold text-lg text-gray-800">Manual Search</h5>
+                        <p class="text-gray-600 mt-1">Google Scholar, Legacy Databases</p>
+                        <p class="text-sm text-gray-500 mt-2 italic">High friction, low guidance.</p>
+                    </div>
+                    <div class="quadrant border border-stone-200 rounded-lg p-6 bg-white">
+                        <h5 class="font-bold text-lg text-gray-800">Management Tools</h5>
+                        <p class="text-gray-600 mt-1">EndNote, Zotero</p>
+                        <p class="text-sm text-gray-500 mt-2 italic">Citation and management, not discovery.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="team" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">An Experienced & Passionate Team</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We collectively speak 15 languages and have deep familiarity with education systems worldwide.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
+                     <img src="https://media.licdn.com/dms/image/v2/D4E03AQGPbOJ52V6Ong/profile-displayphoto-scale_400_400/B4EZgzw6pgGcAg-/0/1753215118633?e=1761782400&v=beta&t=wt8najlyH3Gk6d8iJmV4SkP4lbUa78wVXer_RXh0pL0" alt="Maci Mechiche" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                     <h4 class="text-lg font-bold text-gray-800">Maci Mechiche</h4>
+                     <p class="text-teal-700 font-semibold">Founder/CEO</p>
+                     <p class="text-sm text-gray-600 mt-3">Master's in Industrial Management, published academic, and former Sales Director.</p>
+                </div>
+                 <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
+                    <img src="https://media.licdn.com/dms/image/v2/C4E03AQGlxIxsrRsJoA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1517259520939?e=1761782400&v=beta&t=igaLWV2u05gSCQOD7dYTthPlDOHVX55loFTXwU1a_L0" alt="Surya Yadav" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                     <h4 class="text-lg font-bold text-gray-800">Surya Yadav</h4>
+                     <p class="text-teal-700 font-semibold">Founder/COO</p>
+                     <p class="text-sm text-gray-600 mt-3">Two Master's degrees in Industrial Engineering & Business. Former Product Lead at eSend.</p>
+                </div>
+                 <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
+                    <img src="https://media.licdn.com/dms/image/v2/C5603AQFOllZxytdmUw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1517638022683?e=1761782400&v=beta&t=3hjASDAP27OqssHHfXGij4uwEFgz48WC5tUwrncw8N0" alt="Aman Yadav" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                     <h4 class="text-lg font-bold text-gray-800">Aman Yadav</h4>
+                     <p class="text-teal-700 font-semibold">Co-founder/CTO</p>
+                     <p class="text-sm text-gray-600 mt-3">Bachelor's in CS. Pivotal in launching multiple startups. Former Sr. Software Engineer.</p>
+                </div>
+                 <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
+                    <img src="https://media.licdn.com/dms/image/v2/C4D03AQE627bdsIf95Q/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1539352572647?e=1761782400&v=beta&t=-f-7s55e1qxCcLjx7yXwvMBsYYnLfhGSO0w1SZOmu58" alt="Phong Hai Nguyen" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+                     <h4 class="text-lg font-bold text-gray-800">Phong Hai Nguyen</h4>
+                     <p class="text-teal-700 font-semibold">Co-founder/AI</p>
+                     <p class="text-sm text-gray-600 mt-3">Master's in CS. Specializes in applying advanced AI to real-world challenges. Former AI Specialist.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ask" class="scroll-mt-20">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The Investment</h3>
+            </div>
+            <div class="bg-white border-2 border-teal-600 rounded-xl shadow-2xl overflow-hidden">
+                <div class="p-8 bg-teal-600 text-white text-center">
+                    <h4 class="text-2xl font-semibold">We are raising €1.5M on a SAFE</h4>
+                    <p class="opacity-80">(Note: SAFE with a €10M post-money valuation cap)</p>
+                </div>
+                <div class="grid md:grid-cols-2">
+                     <div class="p-8">
+                        <h5 class="text-xl font-bold text-gray-800 mb-4">Use of Funds</h5>
+                        <div class="chart-container">
+                             <canvas id="useOfFundsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="p-8 bg-stone-50">
+                        <h5 class="text-xl font-bold text-gray-800 mb-4">To Achieve in 24 Months:</h5>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <span class="text-teal-600 font-bold mr-3">&#10003;</span>
+                                <div><span class="font-semibold text-gray-700">€1M+ in ARR:</span> Scale revenue engine.</div>
+                            </li>
+                            <li class="flex items-start">
+                               <span class="text-teal-600 font-bold mr-3">&#10003;</span>
+                                <div><span class="font-semibold text-gray-700">35+ Enterprise Licenses:</span> Secure university-wide partnerships.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-teal-600 font-bold mr-3">&#10003;</span>
+                                <div><span class="font-semibold text-gray-700">1.5M+ Users:</span> Grow our organic acquisition funnel.</div>
+                            </li>
+                             <li class="flex items-start">
+                                <span class="text-teal-600 font-bold mr-3">&#10003;</span>
+                                <div><span class="font-semibold text-gray-700">UK & DACH Expansion:</span> Establish a key beachhead in new markets.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-12 text-center text-xl text-gray-700 font-semibold italic">"The next breakthrough is waiting. Aveksana is the engine that will fuel it. Join us."</p>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-stone-200 mt-20">
+        <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+            <p>&copy; 2025 Aveksana. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const useOfFundsCtx = document.getElementById('useOfFundsChart');
+            if (useOfFundsCtx) {
+                new Chart(useOfFundsCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Go-to-Market', 'Product & Engineering', 'General & Admin'],
+                        datasets: [{
+                            label: 'Use of Funds',
+                            data: [50, 35, 15],
+                            backgroundColor: [
+                                'rgb(13, 148, 136)',
+                                'rgb(15, 118, 110)',
+                                'rgb(17, 94, 89)'
+                            ],
+                            borderColor: '#FDFBF8',
+                            borderWidth: 4,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                   color: '#374151'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.dataset.counterTarget, 10);
+                        const prefix = el.dataset.prefix || '';
+                        const suffix = el.dataset.suffix || '';
+                        let current = 0;
+                        const duration = 2000;
+                        const stepTime = 20;
+                        const steps = duration / stepTime;
+                        const increment = target / steps;
+                        
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(timer);
+                            }
+                            let displayValue = Math.ceil(current).toLocaleString();
+                            if (suffix === 'k+') {
+                                displayValue = (Math.ceil(current) / 1000).toLocaleString() + 'k+';
+                            }
+                            el.textContent = prefix + displayValue + suffix.replace('k+','');
+                        }, stepTime);
+
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('[data-counter-target]').forEach(counter => {
+                counterObserver.observe(counter);
+            });
+
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            
+            const sectionObserver = new IntersectionObserver((entries) => {
+                 entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                           link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                 });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+            
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
