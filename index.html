@@ -23,12 +23,12 @@
             color: #0d9488;
             font-weight: 600;
         }
-        .stat-card, .market-card, .model-card, .why-card, .advisor-card {
+        .stat-card, .market-card, .model-card, .why-card, .advisor-card, .traction-card {
             background-color: #ffffff;
             border: 1px solid #e5e7eb;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .stat-card:hover, .market-card:hover, .model-card:hover, .why-card:hover, .advisor-card:hover {
+        .stat-card:hover, .market-card:hover, .model-card:hover, .why-card:hover, .advisor-card:hover, .traction-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
@@ -220,44 +220,33 @@
 
         <section id="traction" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Proving Product-Market Fit</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our organic growth and early B2B validation demonstrate a clear and urgent market need.</p>
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">A Trifecta of Validation</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We have proven demand from users, paying customers, and expert innovation agencies.</p>
             </div>
 
-            <div class="bg-white border border-stone-200 rounded-xl">
-                <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-stone-200">
-                    <div class="p-8">
-                        <h4 class="text-2xl font-bold text-teal-800 mb-6 text-center">B2C Organic Growth Engine</h4>
-                        <div class="space-y-6">
-                            <div class="text-center">
-                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="22000" data-suffix="+">0</p>
-                                <p class="text-md text-gray-600 font-semibold">Users Acquired Organically</p>
-                                <p class="text-sm text-gray-500">(Zero marketing spend)</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="100" data-suffix="+">0</p>
-                                <p class="text-md text-gray-600 font-semibold">Daily Sign-ups</p>
-                                 <p class="text-sm text-gray-500">(Purely word-of-mouth)</p>
-                            </div>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="traction-card p-8 rounded-xl text-center flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-2xl font-bold text-teal-800 mb-4">Market Validation</h4>
+                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="22000" data-suffix="+">0</p>
+                        <p class="text-md text-gray-600 font-semibold">Users Acquired Organically</p>
+                        <p class="text-sm text-gray-500">(Zero marketing spend)</p>
                     </div>
-                    <div class="p-8">
-                        <h4 class="text-2xl font-bold text-teal-800 mb-6 text-center">B2B Validation</h4>
-                        <div class="space-y-6 text-center">
-                            <div>
-                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="3000" data-prefix="€" data-suffix="+">0</p>
-                                <p class="text-md text-gray-600 font-semibold">Revenue from University Pilots</p>
-                            </div>
-                            <div>
-                                <p class="text-4xl font-extrabold text-teal-700" data-counter-target="4">0</p>
-                                <p class="text-md text-gray-600 font-semibold">Active & Completed Pilots</p>
-                            </div>
-                             <div class="mt-4 flex justify-center items-center space-x-4 grayscale opacity-75">
-                                 <p class="font-bold">Tampere University</p>
-                                 <p class="font-bold">Aalto University</p>
-                                 <p class="font-bold">VAMK</p>
-                             </div>
-                        </div>
+                </div>
+                <div class="traction-card p-8 rounded-xl text-center flex flex-col justify-between border-2 border-teal-600">
+                     <div>
+                        <h4 class="text-2xl font-bold text-teal-800 mb-4">Customer Validation</h4>
+                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="3000" data-prefix="€" data-suffix="+">0</p>
+                        <p class="text-md text-gray-600 font-semibold">Revenue from University Pilots</p>
+                        <p class="text-sm text-gray-500">(4 active & completed pilots)</p>
+                    </div>
+                </div>
+                <div class="traction-card p-8 rounded-xl text-center flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-2xl font-bold text-teal-800 mb-4">Expert Validation</h4>
+                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="80000" data-prefix="€">0</p>
+                        <p class="text-md text-gray-600 font-semibold">Confirmed Grant Funding</p>
+                        <p class="text-sm text-gray-500">(from Business Finland, with an additional €200k in final approval)</p>
                     </div>
                 </div>
             </div>
