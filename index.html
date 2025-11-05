@@ -23,12 +23,12 @@
             color: #0d9488;
             font-weight: 600;
         }
-        .stat-card, .market-card, .model-card, .why-card, .advisor-card, .traction-card {
+        .stat-card, .market-card, .model-card, .why-card, .advisor-card, .traction-card, .validation-card {
             background-color: #ffffff;
             border: 1px solid #e5e7eb;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .stat-card:hover, .market-card:hover, .model-card:hover, .why-card:hover, .advisor-card:hover, .traction-card:hover {
+        .stat-card:hover, .market-card:hover, .model-card:hover, .why-card:hover, .advisor-card:hover, .traction-card:hover, .validation-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
@@ -62,7 +62,8 @@
             <div class="hidden md:flex space-x-6 lg:space-x-8">
                 <a href="#opportunity" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Opportunity</a>
                 <a href="#product" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Product</a>
-                 <a href="#market" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Market</a>
+                <a href="#validation" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Validation</a>
+                <a href="#market" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Market</a>
                 <a href="#traction" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Traction</a>
                 <a href="#team" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Team</a>
                 <a href="#advisors" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Advisors</a>
@@ -83,7 +84,7 @@ But today’s discovery process is broken, innovators waste time battling outdat
 <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
 Aveksana is building the Discovery Engine, transforming how Academia and Corporate R&D move from idea to innovation.
             </p>
-        </section> <!-- <-- ADDED MISSING CLOSING TAG HERE -->
+        </section>
 
         <!-- ===== SECTION: OPPORTUNITY (NOW IN 3 PARTS: PROBLEM -> OPPORTUNITY -> SOLUTION) ===== -->
         <section id="opportunity" class="mb-24 md:mb-32 scroll-mt-20">
@@ -198,6 +199,36 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
 
         </section>
 
+        <!-- ===== REBUILT SECTION: PRODUCT VALIDATION ===== -->
+        <section id="validation" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Proving Our Data-Driven Playbook</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We've proven our "Aha!" moment is fast, valuable, and directly drives monetization.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Card 1: The Winning Funnel -->
+                <div class="validation-card p-8 rounded-xl text-center border-2 border-teal-600">
+                    <p class="text-6xl font-extrabold text-teal-700">43.5%</p>
+                    <p class="mt-2 text-lg text-gray-600 font-semibold">Activation Rate (Free Trial)</p>
+                    <p class="mt-2 text-gray-500">Our data-proven "Free Trial" model converts an elite 43.5% of new users to their "Aha!" moment (Topic Locked).</p>
+                </div>
+                <!-- Card 2: The Money Metric -->
+                <div class="validation-card p-8 rounded-xl text-center">
+                    <p class="text-6xl font-extrabold text-teal-700">21.2%</p>
+                    <p class="mt-2 text-lg text-gray-600 font-semibold">Activation-to-Paid CVR</p>
+                    <p class="mt-2 text-gray-500">Over 21% of users who reach their "Aha!" moment convert to a paid subscription, directly linking value to revenue.</p>
+                </div>
+                <!-- Card 3: The Speed -->
+                <div class="validation-card p-8 rounded-xl text-center">
+                    <p class="text-6xl font-extrabold text-teal-700">&lt; 24 Hrs</p>
+                    <p class="mt-2 text-lg text-gray-600 font-semibold">Rapid Time-to-Value</p>
+                    <p class="mt-2 text-gray-500">92% of all activated users reach their "Aha!" moment within their first day, proving our product is intuitive and its value is immediate.</p>
+                </div>
+            </div>
+            <p class="mt-12 text-center text-lg text-gray-700 max-w-4xl mx-auto italic">We have de-risked the hardest parts of the funnel: **Activation** and **Monetization**.</p>
+        </section>
+
         <!-- ===== SECTION: MARKET (Unchanged) ===== -->
         <section id="market" class="mb-24 md:mb-32 scroll-mt-20">
             <!-- REMOVED REDUNDANT INTRO LINE THAT WAS HERE -->
@@ -309,7 +340,7 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                 <div class="traction-card p-8 rounded-xl text-center flex flex-col justify-between">
                     <div>
                         <h4 class="text-2xl font-bold text-teal-800 mb-4">Expert Validation</h4>
-                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="80000" data-prefix="€">0</p>
+                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="80000" data-prefix="€">0</fsp>
                         <p class="text-md text-gray-600 font-semibold">Confirmed Grant Funding</p>
                         <p class="text-sm text-gray-500">(from Business Finland, with an additional €200k in final approval)</p>
                     </div>
@@ -430,7 +461,7 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                         <ul class="space-y-4">
                             <li class="flex items-start">
                                 <span class="text-teal-600 font-bold mr-3">&#10003;</span>
-                                <div><span class="font-semibold text-gray-700">~€330k in ARR:</span> Execute Phase 1 of our commercialization strategy.</div>
+                                <div><span class="font-semibold text-gray-700">Reach ~€330k in ARR:</span> By converting our B2B pilot pipeline and scaling our B2C engine.</div>
                             </li>
                             <li class="flex items-start">
                                <span class="text-teal-600 font-bold mr-3">&#10003;</span>
@@ -509,7 +540,6 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                                         }
                                         return label;
                                     }
-                                    // STRAY TEXT "Services and Applications" REMOVED FROM HERE
                                 }
                             }
                         }
@@ -568,19 +598,8 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
             
             sections.forEach(section => {
                 sectionObserver.observe(section);
-                // STRAY "Note: ..." TEXT REMOVED FROM HERE
             });
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
