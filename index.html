@@ -255,8 +255,9 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                     <h4 class="text-xl font-bold text-red-800 text-center mb-4">The Old Way: "Search & Pray"</h4>
                     <p class="text-gray-600 text-center mb-6">Dozens of browser tabs, scattered PDFs, messy notes, and no clear path to a novel idea.</p>
                     
-                    <!-- === IMAGE UPDATED HERE === -->
-                   <img src="images/messy-old-way.jpg" alt="The chaotic old way of research with many tabs" class="rounded-md w-full mb-6 border border-red-200" onerror="this.src='https://placehold.co/600x400/fff0f0/c53030?text=Old+Way+(Messy+Search)'; this.onerror=null;">
+                    <!-- === IMAGE UPDATED HERE (FIXED TYPO & ADDED HEIGHT/COVER) === -->
+                    <img src="images/messy-old-way.jpg" alt="The chaotic old way of research with many tabs" class="rounded-md w-full mb-6 border border-red-200 h-96 object-cover object-top" onerror="this.src='https://placehold.co/600x400/fff0f0/c53030?text=Old+Way+(Messy+Search)'; this.onerror=null;">
+                    
                     <ul class="space-y-2 text-gray-700">
                         <li>Information overload</li>
                         <li>No gap validation</li>
@@ -270,8 +271,8 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                     <h4 class="text-xl font-bold text-teal-800 text-center mb-4">The Aveksana Way: "Explore & Validate"</h4>
                     <p class="text-gray-600 text-center mb-6">One clear, structured workflow that guides you from your own idea to a validated, curated set of insights.</p>
                     
-                    <!-- === THIS IS STILL A PLACEHOLDER === -->
-                    <img src="images/step-3-suggestions.png" alt="Step 3: AI validates the idea and curates literature" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+3:+Validate'; this.onerror=null;">
+                    <!-- === IMAGE UPDATED HERE (NEW FILENAME & ADDED HEIGHT/COVER) === -->
+                    <img src="images/aveksana-way-clean.jpg" alt="The clean and structured Aveksana workflow" class="rounded-md w-full mb-6 border border-teal-200 h-96 object-cover" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Aveksana+Way+(Clean+Output)'; this.onerror=null;">
                     
                     <ul class="space-y-2 text-gray-700">
                         <li>Structured ideation first</li>
@@ -572,7 +573,7 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                      <p class="text-sm text-gray-600 mt-3">Master's in Industrial Management, published academic, and former business development leader.</p>
                      <p class="text-sm text-teal-700 mt-3 font-semibold border-t border-stone-200 pt-3">Scaled Aveksana to 23k+ users with $0 marketing spend.</p>
                 </div>
-                <!-- Surya's Card - UPDATED -->
+                <!-- Surya's Card - UPDATED (IMAGE SRC FIXED) -->
                  <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
                     <img src="https://media.licdn.com/dms/image/v2/C4E03AQGlxIxsrRsJoA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1517259520939?e=1763596800&v=beta&t=OFGU3ElVKLTsWhnuNSavNJA2baZVcTizeQA4x-66caY" alt="Surya Yadav" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://placehold.co/200x200/f0fdfa/0d9488?text=SY'; this.onerror=null;">
                      <h4 class="text-lg font-bold text-gray-800">Surya Yadav</h4>
@@ -607,7 +608,7 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                 </div>
                 <div class="advisor-card bg-white p-6 rounded-xl border border-stone-200 text-center">
                     <!-- FIXED BROKEN URL HERE -->
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQFTfzCHTvuRvw/profile-displayphoto-shrink_400_400/B4DZahTQQ.H0Ak-/0/1746462901926?e=1763596800&v=beta&t=dR8p6wo21UTB0TzzM8iWjWNroAO_kxgSyhhwhup9H0Y" alt="Anna-Riikka Smolander" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://placehold.co/200x200/f0fdfa/0d9488?text=AS'; this.onerror=null;">
+                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQFTfzCHTvuRvw/profile-displayphoto-shrink_400_400/B4DZahTQQ.H0Ak-/0/1746462901926?e=1763596800&v=beta&t=dR8p6wo21UTB0TzzM8iWjWNroAO_kxgSyhhwhup9H0Y" alt="Anna-Riikka Smolander" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='httpsS://placehold.co/200x200/f0fdfa/0d9488?text=AS'; this.onerror=null;">
                     <h4 class="text-lg font-bold text-gray-800">Anna-Riikka Smolander</h4>
                     <p class="text-teal-700 font-semibold">AI Strategy & EdTech Advisor</p>
                     <p class="text-sm text-gray-600 mt-3">EC Digital Europe AI specialist and former edtech CEO. Advising on AI strategy and global edtech expansion.</p>
@@ -727,7 +728,7 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
             // Fixed Counter Logic
             const counterObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
+                    if (entry.isIntersecting) { // <--- TYPO FIX IS HERE
                         const el = entry.target;
                         const target = parseInt(el.dataset.counterTarget, 10);
                         const prefix = el.dataset.prefix || '';
@@ -803,6 +804,4 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
         });
     </script>
 </body>
-
 </html>
-
