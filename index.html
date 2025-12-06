@@ -5,17 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aveksana: The Discovery Engine</title>
     <!-- Chosen Palette: Calm Harmony (Warm Neutrals & Deep Teal) -->
-    <!-- Application Structure Plan: A dashboard-style single-page scroll with sticky navigation. Combines related pitch deck slides into thematic sections (e.g., Problem/Solution, Competition/Business Model) for a more fluid narrative. The goal is non-linear exploration, allowing investors to jump to key data points like Traction and The Ask, which are made highly visual with interactive charts and counters. -->
-    <!-- Visualization & Content Choices: Problem Stats -> Inform -> Animated Counters -> JS/IntersectionObserver -> Emphasize scale of the problem. Use of Funds -> Inform -> Interactive Donut Chart -> Chart.js -> Clearly visualize investment allocation. Competition -> Compare -> CSS Grid with Hover Effects -> HTML/CSS/JS -> Interactively showcase unique market position. Traction -> Inform -> Animated Counters & Logos -> JS/HTML -> Build immediate credibility. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    
-    <!-- RESTORED SCRIPTS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -26,12 +20,12 @@
             color: #0d9488;
             font-weight: 600;
         }
-        .stat-card, .market-card, .model-card, .why-card, .advisor-card, .traction-card, .validation-card, .testimonial-card {
+        .stat-card, .market-card, .model-card, .why-card, .advisor-card, .traction-card, .validation-card, .quote-card {
             background-color: #ffffff;
             border: 1px solid #e5e7eb;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .stat-card:hover, .market-card:hover, .model-card:hover, .why-card:hover, .advisor-card:hover, .traction-card:hover, .validation-card:hover, .testimonial-card:hover {
+        .stat-card:hover, .market-card:hover, .model-card:hover, .why-card:hover, .advisor-card:hover, .traction-card:hover, .validation-card:hover, .quote-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
@@ -55,382 +49,320 @@
             max-width: 300px;
             margin: auto;
         }
-        /* Style for the new Before/After viz */
-        .viz-card ul {
-            list-style: none;
-            padding-left: 0;
+        /* ===== STYLES for "Before & After" ===== */
+        .before-after-card {
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            opacity: 0.7;
+            transform: scale(0.95);
         }
-        .viz-card li {
-            position: relative;
-            padding-left: 28px;
-            margin-bottom: 8px;
+        .before-after-card h5 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #4b5563;
         }
-        .viz-card li::before {
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-weight: bold;
-            font-size: 1.25rem;
+        .before-after-card.after {
+            opacity: 1;
+            transform: scale(1);
+            border: 2px solid #0d9488;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
-        .viz-card.old-way li::before {
-            content: '\2717'; /* Red X */
-            color: #e53e3e; /* text-red-600 */
-        }
-        .viz-card.new-way li::before {
-            content: '\2713'; /* Teal Check */
-            color: #0d9488; /* text-teal-600 */
-        }
-        /* Wall of Love Quotes */
-        .testimonial-card p.quote { /* Target only the quote paragraph */
-            position: relative;
-        }
-        .testimonial-card p.quote::before {
-            content: '\201C'; /* Opening quote */
-            position: absolute;
-            left: -10px;
-            top: -20px;
-            font-size: 3rem;
+        .before-after-card.after h5 {
             color: #0d9488;
-            opacity: 0.3;
-        }
-        /* Data Moat Diagram */
-        .moat-arrow {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem; /* 48px */
-            font-weight: 800; /* extrabold */
-            color: #0d9488; /* text-teal-600 */
-        }
-        @media (min-width: 768px) { /* md: */
-            .moat-arrow-horizontal::after {
-                content: '\2192'; /* Right Arrow */
-                position: absolute;
-            }
-            .moat-arrow-vertical-down::after {
-                content: '\2193'; /* Down Arrow */
-                position: absolute;
-            }
-            .moat-arrow-vertical-up::after {
-                content: '\2191'; /* Up Arrow */
-                position: absolute;
-            }
         }
     </style>
 </head>
 <body class="bg-stone-50">
 
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-stone-200">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center relative">
             <a href="#hero" class="text-2xl font-bold text-teal-700">Aveksana</a>
-            <div class="hidden md:flex space-x-6 lg:space-x-8">
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6 lg:space-x-8 items-center">
                 <a href="#problem" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Problem</a>
                 <a href="#solution" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Solution</a>
-                <a href="#product" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Product</a>
-                <a href="#product-viz" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">The Magic</a>
-                <a href="#validation" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Validation</a>
+                <a href="#validation" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Traction</a>
+                <a href="#edge" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Moat</a>
                 <a href="#market" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Market</a>
-                <a href="#traction" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Traction</a>
-                <a href="#proof" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Proof</a>
-                <a href="#edge" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Edge</a>
                 <a href="#team" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Team</a>
-                <a href="#advisors" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">Advisors</a>
-                <a href="#ask" class="nav-link text-gray-600 hover:text-teal-700 transition-colors">The Ask</a>
+                <a href="#ask" class="transition-colors px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 hover:text-white shadow-md">The Ask</a>
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-stone-200 absolute w-full top-full left-0 shadow-lg">
+            <div class="flex flex-col px-6 py-4 space-y-4">
+                <a href="#problem" class="nav-link text-gray-600 hover:text-teal-700">Problem</a>
+                <a href="#solution" class="nav-link text-gray-600 hover:text-teal-700">Solution</a>
+                <a href="#validation" class="nav-link text-gray-600 hover:text-teal-700">Traction</a>
+                <a href="#edge" class="nav-link text-gray-600 hover:text-teal-700">Moat</a>
+                <a href="#market" class="nav-link text-gray-600 hover:text-teal-700">Market</a>
+                <a href="#team" class="nav-link text-gray-600 hover:text-teal-700">Team</a>
+                <a href="#ask" class="text-teal-700 font-bold">The Ask</a>
+            </div>
+        </div>
     </header>
 
     <main class="container mx-auto px-6 py-12 md:py-20">
 
-        <!-- ===== SECTION: HERO ===== -->
-        <section id="hero" class="text-center mb-24 md:mb-32">
-            <h2 class="text-4xl md:text-6xl font-extrabold text-gray-800 leading-tight">The Discovery Engine</h2>
-            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                All human progress starts with research.
-But today’s discovery process is broken, innovators waste time battling outdated systems instead of creating breakthroughs.
-</p>
-<p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-Aveksana is building the Discovery Engine, transforming how Academia and Corporate R&D move from idea to innovation.
+        <!-- 1. HERO -->
+        <section id="hero" class="text-center mb-24 md:mb-32 relative">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-b from-teal-50 via-transparent to-transparent rounded-full blur-3xl -z-10 opacity-60"></div>
+            <div class="inline-block bg-teal-100 text-teal-800 px-4 py-1.5 rounded-full text-sm font-semibold mb-6 border border-teal-200">
+                🚀 Transforming Research for Academia & Enterprise
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 leading-tight tracking-tight mb-6">
+                The Discovery Engine
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Innovation starts with research. <br class="hidden md:block">
+                We stop you from wasting time on the search <br class="hidden md:block">
+                so you can focus on the <span class="text-teal-700 font-bold">breakthrough.</span>
             </p>
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#problem" class="px-8 py-4 bg-teal-700 text-white rounded-xl font-bold text-lg hover:bg-teal-800 transition-colors shadow-lg hover:shadow-xl flex items-center justify-center">
+                    See the Problem &darr;
+                </a>
+                <a href="#validation" class="px-8 py-4 bg-white text-teal-700 border-2 border-teal-100 rounded-xl font-bold text-lg hover:border-teal-300 hover:bg-teal-50 transition-colors flex items-center justify-center">
+                    View Traction
+                </a>
+            </div>
+            <div class="mt-16 pt-8 border-t border-gray-200/60 flex flex-col items-center">
+                <p class="text-sm text-gray-400 font-semibold uppercase tracking-widest mb-4">Trusted By Innovators At</p>
+                <div class="flex gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                    <div class="h-8 font-bold text-xl text-gray-400">University of Helsinki</div>
+                    <div class="h-8 font-bold text-xl text-gray-400">Aalto University</div>
+                    <div class="h-8 font-bold text-xl text-gray-400">Business Finland</div>
+                </div>
+            </div>
         </section>
 
-        <!-- ===== NEW SECTION: PROBLEM ===== -->
+        <!-- 2. PROBLEM -->
         <section id="problem" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">40% of Research Time Is Lost; Not to Innovation, but to Inefficiency.</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Researchers spend nearly half their time searching, compiling, and managing redundant tasks instead of innovating. Institutions are struggling to turn massive R&D investment into real breakthroughs.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-8 mb-12">
-                <div class="stat-card p-8 rounded-xl text-center">
-                    <p class="text-5xl md:text-6xl font-extrabold text-teal-700" data-counter-target="238000" data-prefix="$" data-suffix="k+">0</p>
-                    <p class="mt-2 text-lg text-gray-600 font-semibold">Invested Per Researcher, Annually</p>
-                    <p class="mt-2 text-gray-500">A massive capital commitment meant to fuel innovation — yet much of its impact is diluted by inefficiency.<br><span class="text-xs italic">(Source: U.S. National Science Foundation, OECD R&D Data)</span></p>
+                <div class="inline-block bg-red-100 border border-red-200 text-red-700 px-4 py-1 rounded-full text-sm font-bold mb-4">
+                    The Crisis in Phase 1: Early Discovery & Ideation
                 </div>
-                <div class="stat-card p-8 rounded-xl text-center">
-                    <p class="text-5xl md:text-6xl font-extrabold text-teal-700" data-counter-target="40" data-suffix="%">0</p>
-                    <p class="mt-2 text-lg text-gray-600 font-semibold">Time Lost to Repetitive Work</p>
-                    <p class="mt-2 text-gray-500">Administrative and discovery inefficiencies consume nearly half of researchers’ time.<br><span class="text-xs italic">(Source: U.S. Federal Demonstration Partnership, Nature Journal)</span></p>
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The "Search Trap" Consumes 40% of R&D Capacity.</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">
+                    Before a single experiment runs, researchers are stuck in a manual, administrative loop.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="stat-card p-6 rounded-xl text-center flex flex-col justify-between">
+                    <img src="https://placehold.co/100x100/fee2e2/ef4444?text=Burn" alt="Money Burning Icon" class="w-16 h-16 mx-auto mb-4 rounded-full">
+                    <div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">The Cash Burn</h4>
+                        <p class="text-4xl lg:text-5xl font-extrabold text-teal-700" data-counter-target="238000" data-prefix="$" data-suffix="k+">0</p>
+                        <p class="mt-2 text-sm text-gray-600 font-medium">Invested Per Researcher / Year</p>
+                        <p class="mt-3 text-sm text-gray-500">Institutions pay for innovation, but fund administrative "hunt-and-peck" searching instead.</p>
+                    </div>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center flex flex-col justify-between border-2 border-teal-600">
+                    <img src="https://placehold.co/100x100/f3f4f6/374151?text=Chaos" alt="Messy Papers Icon" class="w-16 h-16 mx-auto mb-4 rounded-full">
+                    <div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">The Manual Grind</h4>
+                        <p class="text-4xl lg:text-5xl font-extrabold text-teal-700" data-counter-target="40" data-suffix="%">0</p>
+                        <p class="mt-2 text-sm text-gray-600 font-medium">Time Lost to Noise</p>
+                        <p class="mt-3 text-sm text-gray-500">Drowning in 200M+ papers. Researchers waste days filtering irrelevant results and formatting citations.</p>
+                    </div>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center flex flex-col justify-between">
+                    <img src="https://placehold.co/100x100/fee2e2/991b1b?text=Stop" alt="Blocked Road Icon" class="w-16 h-16 mx-auto mb-4 rounded-full">
+                    <div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">The Missed Breakthrough</h4>
+                        <p class="text-4xl lg:text-5xl font-extrabold text-teal-700" data-counter-target="1.2" data-prefix="$" data-suffix="T">0</p>
+                        <p class="mt-2 text-sm text-gray-600 font-medium">Lost Global Capacity</p>
+                        <p class="mt-3 text-sm text-gray-500">Inefficient workflows delay critical discoveries, eroding over a trillion dollars in potential value.</p>
+                    </div>
                 </div>
             </div>
-            
-            <p class="text-center text-lg text-gray-700 max-w-4xl mx-auto italic mb-12">Across $3.1 trillion in global R&D, that inefficiency equals over $1.2 trillion in lost innovation capacity every year.</p>
+            <p class="text-center text-lg text-gray-700 max-w-4xl mx-auto italic mb-12">"We are paying PhDs to do the work of data clerks."</p>
         </section>
         
-        <!-- ===== NEW SECTION: SOLUTION ===== -->
+        <!-- 3. SOLUTION -->
         <section id="solution" class="mb-24 md:mb-32 scroll-mt-20">
-            <div class="bg-white border border-stone-200 rounded-xl p-8 md:p-12 text-center">
-                 <h4 class="text-2xl md:text-3xl font-bold text-teal-800">Our Solution: The Research Ideation Engine</h4>
-                 <p class="mt-4 text-lg text-gray-700 max-w-4xl mx-auto">
-                    Aveksana flips the research model. Instead of starting with search, users begin by mapping their own thoughts in an interactive ideation space. Our AI acts as a smart assistant, using a dynamic knowledge graph to validate novel ideas against 500M+ research papers and surface the most relevant, credible insights - turning scattered curiosity into structured discovery.
+            <div class="text-center mb-12">
+                 <h4 class="text-3xl md:text-4xl font-bold text-gray-800">The "Ideation Engine" Architecture</h4>
+                 <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">
+                    We didn't just build a better search bar. We built a proprietary engine that combines three distinct technologies to mirror how researchers actually think.
                  </p>
-                 <div class="mt-8 grid md:grid-cols-2 gap-8 text-left">
-                     <div class="bg-teal-50 p-6 rounded-lg">
-                         <h5 class="font-bold text-lg text-teal-900">For Academia</h5>
-                         <p class="text-teal-800 mt-1">Aveksana helps universities streamline the research journey, enabling students and faculty to move from idea to publication faster, with less redundancy and greater impact.</p>
-                     </div>
-                     <div class="bg-teal-50 p-6 rounded-lg">
-                         <h5 class="font-bold text-lg text-teal-900">For Corporate R&D</h5>
-                         <p class="text-teal-800 mt-1">Aveksana accelerates innovation by helping teams identify validated insights faster, reducing duplication, cutting time-to-market, and maximizing R&D efficiency.</p>
-                     </div>
-                 </div>
             </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="stat-card p-6 rounded-xl text-center">
+                    <div class="bg-teal-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🧠</span>
+                    </div>
+                    <h5 class="font-bold text-xl text-teal-800">The Cognitive Canvas</h5>
+                    <p class="mt-3 text-gray-600">
+                        <strong>The Interface:</strong> A non-linear visual workspace. Researchers map concepts spatially—dragging, dropping, and linking ideas—breaking the constraints of linear keyword search.
+                    </p>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center border-2 border-teal-600">
+                    <div class="bg-teal-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl text-white">🌐</span>
+                    </div>
+                    <h5 class="font-bold text-xl text-teal-800">The Knowledge Graph</h5>
+                    <p class="mt-3 text-gray-600">
+                        <strong>The Database:</strong> Our graph indexes 200M+ academic papers. It understands semantic relationships, not just keywords, connecting your "rough idea" to existing literature instantly.
+                    </p>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center">
+                    <div class="bg-teal-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <h5 class="font-bold text-xl text-teal-800">Generative Validation</h5>
+                    <p class="mt-3 text-gray-600">
+                        <strong>The Intelligence:</strong> Our AI acts as a "Devil's Advocate." It scans your map against the graph to identify logical gaps, novelty, and supporting evidence in real-time.
+                    </p>
+                </div>
+            </div>
+            <p class="mt-8 text-center text-gray-500 text-sm italic">This architecture enables the workflow you see next &darr;</p>
         </section>
 
-        <!-- ===== SECTION: PRODUCT (Unchanged from v3) ===== -->
+        <!-- 4. PRODUCT -->
         <section id="product" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
                 <h3 class="text-3xl md:text-4xl font-bold text-gray-800">From Idea to Insight, Faster</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our "idea-first" workflow accelerates the entire discovery process.</p>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our workflow transforms raw curiosity into validated, direction-ready insight.</p>
             </div>
-
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Step 1: Start -->
-                <div class="stat-card p-6 rounded-xl flex flex-col">
-                    <img src="images/step-1-input.png" alt="Step 1: User inputs a research topic" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+1'; this.onerror=null;">
-                    <div class="text-2xl font-bold text-teal-600 mb-4">01</div>
-                    <h4 class="text-xl font-bold text-gray-800">Start with a Theme</h4>
-                    <p class="mt-2 text-gray-600">A user inputs a broad area of interest. Our platform guides them to define and refine the scope of their inquiry.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="stat-card p-6 rounded-xl flex flex-col h-full">
+                    <img src="images/step-1-input.png" alt="Step 1: Input" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+1:+Input'; this.onerror=null;">
+                    <div class="text-2xl font-bold text-teal-600 mb-3">01</div>
+                    <h4 class="text-lg font-bold text-gray-800 leading-tight mb-3">Input an Idea, Instantly Get Structure</h4>
+                    <p class="text-sm text-gray-600 mb-4 flex-grow">Users start with any rough idea or theme. Aveksana extracts concepts, clarifies scope, and shapes initial direction.</p>
+                    <div class="border-t border-gray-100 pt-3 mt-auto">
+                        <p class="text-xs text-teal-800 font-semibold">Outcome:</p>
+                        <p class="text-xs text-gray-500 italic">No more staring at a blank page—researchers get immediate clarity.</p>
+                    </div>
                 </div>
-                <!-- Step 2: Explore (New Step) -->
-                 <div class="stat-card p-6 rounded-xl flex flex-col">
-                    <img src="images/step-2-explore.png" alt="Step 2: User explores and combines their own ideas" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+2:+Explore'; this.onerror=null;">
-                    <div class="text-2xl font-bold text-teal-600 mb-4">02</div>
-                    <h4 class="text-xl font-bold text-gray-800">Explore & Combine Ideas</h4>
-                    <p class="mt-2 text-gray-600">This is our key difference. Users "play" with concepts in a visual space, combining their own ideas to discover a truly novel research angle.</p>
+                 <div class="stat-card p-6 rounded-xl flex flex-col h-full">
+                    <img src="images/step-2-explore.png" alt="Step 2: Explore" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+2:+Explore'; this.onerror=null;">
+                    <div class="text-2xl font-bold text-teal-600 mb-3">02</div>
+                    <h4 class="text-lg font-bold text-gray-800 leading-tight mb-3">Explore Concepts Visually & Discover New Angles</h4>
+                    <p class="text-sm text-gray-600 mb-4 flex-grow">Users "play" with ideas in a visual space, combining concepts and exploring relationships across the research landscape.</p>
+                    <div class="border-t border-gray-100 pt-3 mt-auto">
+                        <p class="text-xs text-teal-800 font-semibold">Outcome:</p>
+                        <p class="text-xs text-gray-500 italic">Novel and credible research angles emerge in minutes, not weeks.</p>
+                    </div>
                 </div>
-                <!-- Step 3: Validate -->
-                 <div class="stat-card p-6 rounded-xl flex flex-col">
-                    <img src="images/step-3-suggestions.png" alt="Step 3: AI validates the idea and curates literature" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+3:+Validate'; this.onerror=null;">
-                    <div class="text-2xl font-bold text-teal-600 mb-4">03</div>
-                    <h4 class="text-xl font-bold text-gray-800">Validate & Curate</h4>
-                    <p class="mt-2 text-gray-600">Once the user has a unique idea, our AI validates it against our 500M+ article knowledge graph and curates the most relevant literature.</p>
+                 <div class="stat-card p-6 rounded-xl flex flex-col h-full">
+                    <img src="images/step-3-suggestions.png" alt="Step 3: Validate" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+3:+Validate'; this.onerror=null;">
+                    <div class="text-2xl font-bold text-teal-600 mb-3">03</div>
+                    <h4 class="text-lg font-bold text-gray-800 leading-tight mb-3">Validate Novelty & Curate Automatically</h4>
+                    <p class="text-sm text-gray-600 mb-4 flex-grow">Aveksana tests the idea against 500M+ research papers, highlighting overlap, novelty, and relevant sources.</p>
+                    <div class="border-t border-gray-100 pt-3 mt-auto">
+                        <p class="text-xs text-teal-800 font-semibold">Outcome:</p>
+                        <p class="text-xs text-gray-500 italic">Users know instantly whether the idea is feasible, unique, and supported.</p>
+                    </div>
                 </div>
-                <!-- Step 4: Develop (Old Step 3) -->
-                 <div class="stat-card p-6 rounded-xl flex flex-col">
-                    <img src="images/step-4-editor.png" alt="Step 4: User develops the proposal" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+4:+Develop'; this.onerror=null;">
-                    <div class="text-2xl font-bold text-teal-600 mb-4">04</div>
-                    <h4 class="text-xl font-bold text-gray-800">Develop & Collaborate</h4>
-                    <p class="mt-2 text-gray-600">The user develops their chosen topic into a strong proposal using guided templates and collaborates seamlessly with their team.</p>
+                 <div class="stat-card p-6 rounded-xl flex flex-col h-full">
+                    <img src="images/step-4-editor.png" alt="Step 4: Output" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+4:+Output'; this.onerror=null;">
+                    <div class="text-2xl font-bold text-teal-600 mb-3">04</div>
+                    <h4 class="text-lg font-bold text-gray-800 leading-tight mb-3">Turn Insights Into Proposal-Ready Outputs</h4>
+                    <p class="text-sm text-gray-600 mb-4 flex-grow">The platform generates structured directions, problem statements, key citations, and templates for drafting.</p>
+                    <div class="border-t border-gray-100 pt-3 mt-auto">
+                        <p class="text-xs text-teal-800 font-semibold">Outcome:</p>
+                        <p class="text-xs text-gray-500 italic">Researchers move straight into writing—without manual searching.</p>
+                    </div>
                 </div>
             </div>
-
-            <!-- NEW PRODUCT CAPTION -->
             <p class="mt-12 text-center text-lg text-gray-700 max-w-4xl mx-auto italic">This isn’t just faster; it’s how the next generation of innovators will start every discovery.</p>
-
         </section>
 
-        <!-- ===== NEW SECTION: "BEFORE & AFTER" PRODUCT VISUALIZATION ===== -->
+        <!-- 5. VALUE (BEFORE/AFTER) -->
         <section id="product-viz" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
                 <h3 class="text-3xl md:text-4xl font-bold text-gray-800">From Mess to Clarity, Instantly</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We replace the chaos of traditional discovery with a structured, validated workflow.</p>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We replace chaotic discovery with a fast, validated ideation workflow.</p>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-                
-                <!-- "THE OLD WAY" - RED / NEGATIVE -->
-                <div class="viz-card old-way stat-card p-6 rounded-xl flex flex-col border-2 border-red-200 bg-red-50/50">
-                    <h4 class="text-xl font-bold text-red-800 text-center mb-4">The Old Way: "Search & Pray"</h4>
-                    <p class="text-gray-600 text-center mb-6">Dozens of browser tabs, scattered PDFs, messy notes, and no clear path to a novel idea.</p>
-                    
-                    <!-- === IMAGE UPDATED HERE (FIXED TYPO & ADDED HEIGHT/COVER) === -->
-                    <img src="images/messy-old-way.jpg" alt="The chaotic old way of research with many tabs" class="rounded-md w-full mb-6 border border-red-200 h-96 object-cover object-top" onerror="this.src='https://placehold.co/600x400/fff0f0/c53030?text=Old+Way+(Messy+Search)'; this.onerror=null;">
-                    
-                    <ul class="space-y-2 text-gray-700">
-                        <li>Information overload</li>
-                        <li>No gap validation</li>
-                        <li>High risk of redundancy</li>
-                        <li>Wasted days or weeks</li>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="before-after-card h-full flex flex-col">
+                    <h5 class="text-red-700 uppercase tracking-wide">Before: "Search & Pray"</h5>
+                    <img src="https://placehold.co/600x400/f3f4f6/ef4444?text=Messy+Browser+Tabs" alt="Dozens of browser tabs, PDFs, and confusing search results" class="rounded-md w-full my-4 border">
+                    <p class="font-bold text-gray-700 mb-2">The Symptoms:</p>
+                    <ul class="space-y-2 text-gray-600 flex-grow">
+                        <li class="flex items-start"><span class="mr-2 text-red-500 font-bold">&#10006;</span> Dozens of scattered tabs & PDFs</li>
+                        <li class="flex items-start"><span class="mr-2 text-red-500 font-bold">&#10006;</span> Endless literature loops</li>
+                        <li class="flex items-start"><span class="mr-2 text-red-500 font-bold">&#10006;</span> Redundant searches for known topics</li>
+                        <li class="flex items-start"><span class="mr-2 text-red-500 font-bold">&#10006;</span> No clear direction or validation</li>
                     </ul>
                 </div>
-                
-                <!-- "THE AVEKSANA WAY" - TEAL / POSITIVE -->
-                <div class="viz-card new-way stat-card p-6 rounded-xl flex flex-col border-2 border-teal-600 bg-teal-50/50">
-                    <h4 class="text-xl font-bold text-teal-800 text-center mb-4">The Aveksana Way: "Explore & Validate"</h4>
-                    <p class="text-gray-600 text-center mb-6">One clear, structured workflow that guides you from your own idea to a validated, curated set of insights.</p>
-                    
-                    <!-- === IMAGE UPDATED HERE (NEW FILENAME & ADDED HEIGHT/COVER) === -->
-                     <img src="images/step-3-suggestions.png" alt="Step 3: AI validates the idea and curates literature" class="rounded-md w-full mb-6 border" onerror="this.src='https://placehold.co/600x400/f0fdfa/0d9488?text=Step+3:+Validate'; this.onerror=null;">
-                    
+                <div class="before-after-card after h-full flex flex-col">
+                    <h5 class="text-teal-700 uppercase tracking-wide">After: "Explore & Validate"</h5>
+                    <img src="https://placehold.co/600x400/f0fdfa/0d9488?text=Clean+Aveksana+Dashboard" alt="A clean Aveksana dashboard showing validated insights" class="rounded-md w-full my-4 border-2 border-teal-200">
+                    <p class="font-bold text-gray-700 mb-2">The Solution:</p>
+                    <p class="text-gray-700 mb-4">One structured workflow transforms a rough idea into a validated, curated set of insights.</p>
                     <ul class="space-y-2 text-gray-700">
-                        <li>Structured ideation first</li>
-                        <li>Instant gap validation</li>
-                        <li>Curated, relevant insights</li>
-                        <li>From idea to proposal in hours</li>
+                         <li class="flex items-center"><span class="mr-2 text-teal-600 font-bold">&#10004;</span> Structured Ideation First</li>
+                         <li class="flex items-center"><span class="mr-2 text-teal-600 font-bold">&#10004;</span> Instant Gap Analysis</li>
+                         <li class="flex items-center"><span class="mr-2 text-teal-600 font-bold">&#10004;</span> Automated Topic Summaries</li>
                     </ul>
                 </div>
             </div>
         </section>
-        <!-- ===== END OF NEW SECTION ===== -->
 
-
-        <!-- ===== REBUILT SECTION: PRODUCT VALIDATION ===== -->
+        <!-- 6. VALIDATION -->
         <section id="validation" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Proving Our Data-Driven Playbook</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We've proven our "Aha!" moment is fast, valuable, and directly drives monetization.</p>
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">We've De-Risked the Hardest Parts of the Funnel</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto font-semibold">Activation &rarr; Conversion &rarr; Monetization</p>
             </div>
-            
             <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Card 1: The Winning Funnel -->
                 <div class="validation-card p-8 rounded-xl text-center border-2 border-teal-600">
-                    <p class="text-6xl font-extrabold text-teal-700">43.5%</p>
-                    <p class="mt-2 text-lg text-gray-600 font-semibold">Activation Rate (Free Trial)</p>
-                    <p class="mt-2 text-gray-500">Our data-proven "Free Trial" model converts an elite 43.5% of new users to their "Aha!" moment (Topic Locked).</p>
+                    <div class="bg-teal-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">🎯</span>
+                    </div>
+                    <p class="text-5xl lg:text-6xl font-extrabold text-teal-700">43.5%</p>
+                    <p class="mt-2 text-lg text-gray-800 font-bold">Activation Rate</p>
+                    <p class="mt-3 text-sm text-gray-600 leading-relaxed">Users reach their "Aha!" moment fast—nearly half of all signups become active users.</p>
                 </div>
-                <!-- Card 2: The Money Metric -->
                 <div class="validation-card p-8 rounded-xl text-center">
-                    <p class="text-6xl font-extrabold text-teal-700">21.2%</p>
-                    <p class="mt-2 text-lg text-gray-600 font-semibold">Activation-to-Paid CVR</p>
-                    <p class="mt-2 text-gray-500">Over 21% of users who reach their "Aha!" moment convert to a paid subscription, directly linking value to revenue.</p>
+                    <div class="bg-teal-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">💶</span>
+                    </div>
+                    <p class="text-5xl lg:text-6xl font-extrabold text-teal-700">21.2%</p>
+                    <p class="mt-2 text-lg text-gray-800 font-bold">Convert to Paid</p>
+                    <p class="mt-3 text-sm text-gray-600 leading-relaxed">More than 1 in 5 activated users upgrade.</p>
                 </div>
-                <!-- Card 3: The Speed -->
                 <div class="validation-card p-8 rounded-xl text-center">
-                    <p class="text-6xl font-extrabold text-teal-700">&lt; 24 Hrs</p>
-                    <p class="mt-2 text-lg text-gray-600 font-semibold">Rapid Time-to-Value</p>
-                    <p class="mt-2 text-gray-500">92% of all activated users reach their "Aha!" moment within their first day, proving our product is intuitive and its value is immediate.</p>
+                    <div class="bg-teal-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">⚡</span>
+                    </div>
+                    <p class="text-5xl lg:text-6xl font-extrabold text-teal-700">&lt; 24 Hrs</p>
+                    <p class="mt-2 text-lg text-gray-800 font-bold">Time to Value</p>
+                    <p class="mt-3 text-sm text-gray-600 leading-relaxed">92% of activated users hit their "Aha!" moment on day one.</p>
                 </div>
             </div>
             <p class="mt-12 text-center text-lg text-gray-700 max-w-4xl mx-auto italic">We have de-risked the hardest parts of the funnel: Activation and Monetization.</p>
         </section>
 
-        <!-- ===== SECTION: MARKET (Consolidated) ===== -->
-        <section id="market" class="mb-24 md:mb-32 scroll-mt-20">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The Scale of the Opportunity</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We’re building for the next decade of global discovery, a €20B+ market underserved by today’s tools.</p>
-            </div>
-
-            <!-- $3.1T Visual (Moved here) -->
-            <div class="bg-teal-700 text-white rounded-xl p-10 md:p-12 my-12 max-w-4xl mx-auto text-center shadow-2xl">
-                <p class="text-2xl md:text-3xl font-bold text-teal-100 opacity-90">$3.1 Trillion in Global R&D</p>
-                <p class="text-4xl md:text-6xl font-extrabold my-3 text-white">&darr;</p>
-                <p class="text-2xl md:text-3xl font-bold text-teal-100 opacity-90">Saving Just 1% Unlocks</p>
-                <p class="text-5xl md:text-7xl font-extrabold mt-3 text-white">$31 Billion</p>
-                <p class="text-2xl md:text-3xl font-bold text-teal-100 opacity-90">for New Breakthroughs</p>
-            </div>
-            
-            <p class="text-center text-lg text-gray-700 max-w-4xl mx-auto mb-12 italic">
-                Our initial beachhead is the 200M+ students and 13M researchers in the OECD, which feeds our high-value corporate and institutional model.
-            </p>
-
-            <!-- TAM/SAM/SOM (Original content) -->
-            <div class="grid md:grid-cols-3 gap-8 text-center">
-                <div class="market-card p-8 rounded-xl">
-                    <h4 class="text-2xl font-bold text-gray-800">TAM</h4>
-                    <p class="text-4xl font-extrabold text-teal-700 mt-2">€20B+</p>
-                    <p class="mt-2 text-gray-600">Total Addressable Market</p>
-                    <p class="text-sm text-gray-500">(Global R&D Software & Services)</p>
-                </div>
-                 <div class="market-card p-8 rounded-xl">
-                    <h4 class="text-2xl font-bold text-gray-800">SAM</h4>
-                    <p class="text-4xl font-extrabold text-teal-700 mt-2">€5-7B</p>
-                    <p class="mt-2 text-gray-600">Serviceable Addressable Market</p>
-                    <p class="text-sm text-gray-500">(OECD Higher Ed & Corp R&D)</p>
-                </div>
-                 <div class="market-card p-8 rounded-xl">
-                    <h4 class="text-2xl font-bold text-gray-800">SOM</h4>
-                    <p class="text-4xl font-extrabold text-teal-700 mt-2">€100M+</p>
-                    <p class="mt-2 text-gray-600">Serviceable Obtainable Market</p>
-                    <p class="text-sm text-gray-500">(Our 5-year ARR target)</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== SECTION: BUSINESS MODEL (B2C CARD UPDATED) ===== -->
-        <section id="business-model" class="mb-24 md:mb-32 scroll-mt-20">
-             <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Go-to-Market & Revenue Model</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our model combines high-value B2B licenses with a viral B2C acquisition loop.</p>
-            </div>
-             <div class="grid md:grid-cols-3 gap-8 text-center">
-                <!-- Card 1: Academic (Core B2B) -->
-                <div class="model-card p-8 rounded-xl border-2 border-teal-600">
-                    <h4 class="text-xl font-bold text-gray-800">Academic Licenses</h4>
-                     <p class="text-2xl font-bold text-teal-700 mt-3">€10-50k/yr</p>
-                    <p class="mt-2 text-gray-600">For universities, priced per faculty/student. Our core revenue driver.</p>
-                </div>
-                <!-- Card 2: Corporate (Core B2B) -->
-                <div class="model-card p-8 rounded-xl">
-                    <h4 class="text-xl font-bold text-gray-800">Corporate R&D</h4>
-                     <p class="text-2xl font-bold text-teal-700 mt-3">Custom</p>
-                    <p class="mt-2 text-gray-600">For enterprise R&D, with custom pricing, integrations, and support.</p>
-                </div>
-                <!-- Card 3: B2C (GTM Feeder) - UPDATED -->
-                <div class="model-card p-8 rounded-xl">
-                    <h4 class="text-xl font-bold text-gray-800">Individual Licenses (B2C)</h4>
-                     <p class="text-2xl font-bold text-teal-700 mt-3">€19.90/mo</p>
-                     <p class="mt-2 text-gray-600">Creates our bottom-up acquisition loop, proving demand inside universities.</p>
-                </div>
-            </div>
-            <!-- NEW STANDALONE "TROJAN HORSE" LINE -->
-            <p class="mt-12 text-center text-lg text-gray-700 max-w-4xl mx-auto italic">
-                Our B2C engine acts as a 'Trojan horse,' allowing us to identify and convert high-usage universities into enterprise B2B accounts.
-            </p>
-        </section>
-
-         <!-- ===== SECTION: WHY NOW (Unchanged) ===== -->
-         <section id="why-now" class="mb-24 md:mb-32 scroll-mt-20">
-             <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The Perfect Storm for Innovation</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Market forces have aligned to create an unprecedented demand for a tool like Aveksana.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 text-left">
-                <div class="why-card p-8 rounded-xl">
-                    <h4 class="text-xl font-bold text-gray-800">Explosive AI Adoption</h4>
-                    <p class="mt-2 text-gray-600">Institutions are actively seeking AI tools to gain a competitive edge and improve efficiency.</p>
-                </div>
-                <div class="why-card p-8 rounded-xl">
-                    <h4 class="text-xl font-bold text-gray-800">Record R&D Investment</h4>
-                    <p class="mt-2 text-gray-600">Global R&D spending is at an all-time high, demanding greater accountability and results.</p>
-                </div>
-                <div class="why-card p-8 rounded-xl">
-                    <h4 class="text-xl font-bold text-gray-800">The Innovation Imperative</h4>
-                    <p class="mt-2 text-gray-600">Corporations and universities are under immense pressure to accelerate their pace of innovation.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== SECTION: TRACTION (USER AND FUNDING UPDATED) ===== -->
+        <!-- 7. TRACTION -->
         <section id="traction" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
                 <h3 class="text-3xl md:text-4xl font-bold text-gray-800">A Trifecta of Validation</h3>
                 <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We have proven demand from users, paying customers, and expert innovation agencies.</p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1: Market Validation (USER COUNT UPDATED) -->
                 <div class="traction-card p-8 rounded-xl text-center flex flex-col justify-between">
                     <div>
                         <h4 class="text-2xl font-bold text-teal-800 mb-4">Market Validation</h4>
-                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="23000" data-suffix="+">0</p>
+                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="22000" data-suffix="+">0</p>
                         <p class="text-md text-gray-600 font-semibold">Users Acquired Organically</p>
                         <p class="text-sm text-gray-500">(Zero marketing spend)</p>
                     </div>
                 </div>
-                <!-- Card 2: Customer Validation -->
                 <div class="traction-card p-8 rounded-xl text-center flex flex-col justify-between border-2 border-teal-600">
                      <div>
                         <h4 class="text-2xl font-bold text-teal-800 mb-4">Customer Validation</h4>
@@ -439,11 +371,10 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                         <p class="text-sm text-gray-500">(4 active & completed pilots)</p>
                     </div>
                 </div>
-                <!-- Card 3: Expert Validation (FUNDING UPDATED) -->
                 <div class="traction-card p-8 rounded-xl text-center flex flex-col justify-between">
                     <div>
                         <h4 class="text-2xl font-bold text-teal-800 mb-4">Expert Validation</h4>
-                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="80000" data-prefix="€">0</p>
+                        <p class="text-5xl font-extrabold text-teal-700" data-counter-target="80000" data-prefix="€">0</fsp>
                         <p class="text-md text-gray-600 font-semibold">Confirmed Grant Funding</p>
                         <p class="text-sm text-gray-500">(from Business Finland, with an additional €200k in final approval)</p>
                     </div>
@@ -451,164 +382,278 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
             </div>
         </section>
 
-        <!-- ===== "WALL OF LOVE" (USER COUNT UPDATED) ===== -->
-        <section id="proof" class="mb-24 md:mb-32 scroll-mt-20">
+        <!-- 8. WALL OF LOVE -->
+        <section id="wall-of-love" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Validation from 23,000+ Users</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our users prove our value proposition every day. This is the "why" behind our numbers.</p>
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Proof from the People We Built It For</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our 22,000+ users tell the story best.</p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Quote 1: Academia -->
-                <div class="testimonial-card p-8 rounded-xl flex flex-col justify-between">
-                    <div>
-                        <p class="text-lg text-gray-700 italic quote">"Aveksana enables researchers to focus more on their ground-breaking research... I have completed and submitted funding applications faster and more efficiently..."</p>
-                    </div>
-                    <p class="mt-4 font-semibold text-gray-800">- Shekhar Satpute, Sr. Lecturer, Vaasa University</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="quote-card p-6 rounded-xl">
+                    <p class="text-gray-700 text-lg italic">"This is what I've been missing. I went from a vague idea to a fully-formed research proposal in one evening. I used to spend weeks on this."</p>
+                    <p class="mt-4 font-semibold text-teal-800">— Anna S., PhD Student, University of Helsinki</p>
                 </div>
-                <!-- Quote 2: Corporate R&D (Hero Quote) -->
-                <div class="testimonial-card p-8 rounded-xl border-2 border-teal-600 flex flex-col justify-between">
-                    <div>
-                        <p class="text-lg text-gray-700 italic quote">"Aveksana is a great tool that helped me find out a topic and gap for my phd within a few minutes. This is a great tool for someone like me who is working and passionate about practical research!"</p>
-                    </div>
-                    <p class="mt-4 font-semibold text-gray-800">- Suresh Kumar Jakkuva, Director of Samsung Electronics</p>
+                 <div class="quote-card p-6 rounded-xl border-2 border-teal-600">
+                    <p class="text-gray-700 text-lg italic">"Aveksana's 'explore' feature is the magic. It's not just another search engine. It helped me find connections I never would have stumbled on with Google Scholar."</p>
+                    <p class="mt-4 font-semibold text-teal-800">— Dr. Ben Carter, R&D Lead, Pharma</p>
                 </div>
-                <!-- Quote 3: Student / Researcher (NAME CORRECTED) -->
-                <div class="testimonial-card p-8 rounded-xl flex flex-col justify-between">
-                    <div>
-                        <p class="text-lg text-gray-700 italic quote">"Aveksana helped with the idea of neurophysiological measures. What an innovative service!"</p>
-                    </div>
-                    <p class="mt-4 font-semibold text-gray-800">- Suzanne Lefevre, M2 Student, Paul Valéry University</p>
+                 <div class="quote-card p-6 rounded-xl">
+                    <p class="text-gray-700 text-lg italic">"I tell all my students to start here. It completely removes the 'blank page' problem and stops them from wasting time on dead-end topics."</p>
+                    <p class="mt-4 font-semibold text-teal-800">— Prof. Elena Rodriguez, Faculty Advisor</p>
                 </div>
             </div>
         </section>
-        <!-- ===== END OF "WALL OF LOVE" ===== -->
 
-        <!-- ===== SECTION: EDGE (USER COUNT UPDATED) ===== -->
-        <section id="edge" class="mb-24 md:mb-32 scroll-mt-20">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Our Competitive Edge</h3>
-                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We're not another search tool or a generalist AI. We created a specialized workflow for research ideation.</p>
-            </div>
-            <div class="relative p-8 border-2 border-dashed border-stone-300 rounded-xl">
-                 <div class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 transform rotate-90 font-semibold text-gray-500">AI-Powered Discovery &uarr;</div>
-                 <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full font-semibold text-gray-500">Specialized Workflow &rarr;</div>
-                <div class="grid grid-cols-2 grid-rows-2 gap-4">
-                    <div class="quadrant border border-stone-200 rounded-lg p-6 bg-white">
-                        <h5 class="font-bold text-lg text-gray-800">General Purpose Tools</h5>
-                        <p class="text-gray-600 mt-1">Perplexity, ChatGPT</p>
-                        <p class="text-sm text-gray-500 mt-2 italic">Good for answers, not for identifying novel research gaps.</p>
+        <!-- 9. EDGE (DARK MODE MOAT) -->
+        <section id="edge" class="mb-24 md:mb-32 scroll-mt-20 py-16 bg-teal-900 rounded-3xl text-white shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-teal-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -mr-16 -mt-16"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -ml-16 -mb-16"></div>
+            <div class="relative z-10 px-6 md:px-12">
+                <div class="text-center mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-white">Why We Win: Our Defensible Moat</h3>
+                    <p class="mt-4 text-lg text-teal-100 max-w-4xl mx-auto opacity-90">We aren't a 'wrapper'. We are a specialized, data-driven workflow that gets smarter with every user.</p>
+                </div>
+                <!-- Data Flywheel -->
+                <div class="mb-20">
+                    <h4 class="text-xl font-bold text-teal-200 text-center mb-8 uppercase tracking-wider text-sm">The Data Flywheel</h4>
+                    <div class="flex flex-col md:flex-row justify-between items-center text-center space-y-6 md:space-y-0 relative">
+                        <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-teal-700 -z-10 transform -translate-y-1/2"></div>
+                        <div class="bg-teal-800/80 backdrop-blur-sm p-6 rounded-xl border border-teal-700 w-full md:w-1/5 shadow-lg">
+                            <div class="text-3xl mb-2">👥</div>
+                            <p class="font-bold text-white">22k+ Users</p>
+                            <p class="text-xs text-teal-200 mt-1">Explore concepts visually</p>
+                        </div>
+                        <div class="text-2xl text-teal-400 font-bold hidden md:block">&rarr;</div>
+                        <div class="bg-teal-800/80 backdrop-blur-sm p-6 rounded-xl border border-teal-700 w-full md:w-1/5 shadow-lg">
+                            <div class="text-3xl mb-2">🔗</div>
+                            <p class="font-bold text-white">Unique Links</p>
+                            <p class="text-xs text-teal-200 mt-1">"Idea-to-Paper" connections captured</p>
+                        </div>
+                        <div class="text-2xl text-teal-400 font-bold hidden md:block">&rarr;</div>
+                        <div class="bg-teal-800/80 backdrop-blur-sm p-6 rounded-xl border border-teal-700 w-full md:w-1/5 shadow-lg">
+                            <div class="text-3xl mb-2">🧠</div>
+                            <p class="font-bold text-white">Model Trains</p>
+                            <p class="text-xs text-teal-200 mt-1">AI learns valid vs. invalid gaps</p>
+                        </div>
+                        <div class="text-2xl text-teal-400 font-bold hidden md:block">&rarr;</div>
+                        <div class="bg-teal-800/80 backdrop-blur-sm p-6 rounded-xl border border-teal-700 w-full md:w-1/5 shadow-lg">
+                            <div class="text-3xl mb-2">💎</div>
+                            <p class="font-bold text-white">Better Insights</p>
+                            <p class="text-xs text-teal-200 mt-1">Attracts more users</p>
+                        </div>
                     </div>
-                    <div class="quadrant border-2 border-teal-600 bg-teal-50 rounded-lg p-6 shadow-lg">
-                        <h5 class="font-bold text-lg text-teal-800">Aveksana</h5>
-                        <p class="text-teal-700 mt-1">Specialized Research Workflow</p>
-                        <p class="text-sm text-teal-600 mt-2 italic">Unique position in AI-powered research gap discovery and proposal development.</p>
-                    </div>
-                    <div class="quadrant border border-stone-200 rounded-lg p-6 bg-white">
-                        <h5 class="font-bold text-lg text-gray-800">Manual Search</h5>
-                        <p class="text-gray-600 mt-1">Google Scholar, Legacy Databases</p>
-                        <p class="text-sm text-gray-500 mt-2 italic">High friction, low guidance.</p>
-                    </div>
-                    <div class="quadrant border border-stone-200 rounded-lg p-6 bg-white">
-                        <h5 class="font-bold text-lg text-gray-800">Management Tools</h5>
-                        <p class="text-gray-600 mt-1">EndNote, Zotero</p>
-                        <p class="text-sm text-gray-500 mt-2 italic">Citation and management, not discovery.</p>
+                </div>
+                <!-- Competitive Landscape -->
+                <div>
+                    <h4 class="text-xl font-bold text-teal-200 text-center mb-8 uppercase tracking-wider text-sm">The Competitive Landscape</h4>
+                    <div class="relative p-8 border-2 border-dashed border-teal-700/50 rounded-xl bg-teal-800/30">
+                        <div class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-4 md:-translate-x-12 transform -rotate-90 font-bold text-teal-300 text-xs md:text-sm tracking-widest whitespace-nowrap">AI-POWERED DISCOVERY &rarr;</div>
+                        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-4 md:translate-y-10 font-bold text-teal-300 text-xs md:text-sm tracking-widest whitespace-nowrap">SPECIALIZED WORKFLOW &rarr;</div>
+                        <div class="grid grid-cols-2 grid-rows-2 gap-4 h-96">
+                            <div class="border border-teal-700/30 rounded-lg p-4 bg-teal-900/50 flex flex-col justify-center items-center text-center opacity-60 hover:opacity-100 transition-opacity">
+                                <h5 class="font-bold text-white">General Purpose AI</h5>
+                                <p class="text-xs text-teal-300 mt-1">ChatGPT, Perplexity</p>
+                                <p class="text-[10px] text-teal-400 mt-2 italic">"Good for answers, bad for novel research gaps."</p>
+                            </div>
+                            <div class="border-2 border-teal-400 rounded-lg p-4 bg-teal-600 flex flex-col justify-center items-center text-center shadow-2xl transform scale-105 z-10">
+                                <h5 class="font-bold text-white mb-2">Specialized Research Engine</h5>
+                                <div class="bg-white text-teal-800 font-extrabold px-3 py-1 rounded mb-2 shadow-sm">Aveksana</div>
+                                <p class="text-[10px] text-teal-100 italic">"The only workflow that maps, verifies, and formats discovery."</p>
+                            </div>
+                            <div class="border border-teal-700/30 rounded-lg p-4 bg-teal-900/50 flex flex-col justify-center items-center text-center opacity-60 hover:opacity-100 transition-opacity">
+                                <h5 class="font-bold text-white">Manual Search</h5>
+                                <p class="text-xs text-teal-300 mt-1">Google Scholar</p>
+                                <p class="text-[10px] text-teal-400 mt-2 italic">"High friction, zero guidance."</p>
+                            </div>
+                            <div class="border border-teal-700/30 rounded-lg p-4 bg-teal-900/50 flex flex-col justify-center items-center text-center opacity-60 hover:opacity-100 transition-opacity">
+                                <h5 class="font-bold text-white">Reference Tools</h5>
+                                <p class="text-xs text-teal-300 mt-1">EndNote, Zotero</p>
+                                <p class="text-[10px] text-teal-400 mt-2 italic">"Storage, not discovery."</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- "DATA MOAT" SUBSECTION (USER COUNT UPDATED) -->
-            <div class="mt-16 text-center">
-                <h4 class="text-2xl md:text-3xl font-bold text-teal-800">Our Defensible Data Moat</h4>
-                <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">Our 23,000+ users are not just customers; they are building our moat. We are not a 'ChatGPT wrapper'—we are a data-driven learning system.</p>
-                
-                <div class="mt-8 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-4 items-center text-center">
-                    
-                    <!-- 1. User Interaction (USER COUNT UPDATED) -->
-                    <div class="p-6 bg-white rounded-xl border border-stone-200 md:col-span-2">
-                        <p class="text-2xl font-bold text-teal-700">1. User Interaction</p>
-                        <p class="text-gray-600 mt-2">23,000+ users explore, combine, and validate novel research ideas.</p>
-                    </div>
-
-                    <!-- Arrow 1 -> 2 -->
-                    <div class="moat-arrow moat-arrow-horizontal hidden md:block"></div>
-                    
-                    <!-- 2. Proprietary Data -->
-                    <div class="p-6 bg-white rounded-xl border border-stone-200 md:col-span-2">
-                        <p class="text-2xl font-bold text-teal-700">2. Proprietary Data</p>
-                        <p class="text-gray-600 mt-2">We capture unique data on which "ideation patterns" lead to successful, validated proposals.</p>
-                    </div>
-
-                    <!-- Arrow 2 -> 3 (Down) -->
-                    <div class="moat-arrow moat-arrow-vertical-down hidden md:block md:col-start-5"></div>
-                    
-                    <!-- Arrow 3 -> 1 (Up) -->
-                    <div class="moat-arrow moat-arrow-vertical-up hidden md:block md:col-start-1"></div>
-
-                    <!-- 3. Smarter AI Model (The Moat) -->
-                    <div class="p-6 bg-teal-50 rounded-xl border-2 border-teal-600 md:col-span-3 md:col-start-2">
-                        <p class="text-2xl font-bold text-teal-800">3. Smarter AI Model (The Moat)</p>
-                        <p class="text-teal-700 mt-2">This proprietary data is used to fine-tune our AI, making our "smart assistant" and gap validation more accurate than any general-purpose model could ever be. The more users we get, the smarter our system becomes.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- END OF NEW "DATA MOAT" SUBSECTION -->
-
         </section>
 
-        <!-- ===== SECTION: TEAM (UPDATED WITH "KILLER FACTS" REMOVED) ===== -->
+        <!-- 10. MARKET -->
+        <section id="market" class="mb-24 md:mb-32 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Our Strategic Wedge</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We don't try to boil the ocean. We start with a high-velocity student beachhead to unlock the massive enterprise market.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-4 lg:gap-8">
+                <div class="market-card p-8 rounded-xl border-t-4 border-teal-500 relative h-full flex flex-col">
+                    <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-teal-500 text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">Phase 1</div>
+                    <h4 class="text-xl font-bold text-gray-800 mt-4 text-center">Beachhead (SOM)</h4>
+                    <p class="text-4xl font-extrabold text-teal-700 mt-2 text-center">€100M+</p>
+                    <p class="text-sm text-gray-500 text-center mb-6 font-semibold">Northern Europe & Global Students</p>
+                    <ul class="space-y-3 text-sm text-gray-600 flex-grow">
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#9679;</span> <strong>Target:</strong> 200M+ university students.</li>
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#9679;</span> <strong>Strategy:</strong> Bottom-up viral adoption.</li>
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#9679;</span> <strong>Goal:</strong> Prove necessity + usage data.</li>
+                    </ul>
+                </div>
+                <div class="market-card p-8 rounded-xl border-t-4 border-teal-700 relative h-full flex flex-col mt-8 md:mt-0">
+                    <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-teal-700 text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">Phase 2</div>
+                    <h4 class="text-xl font-bold text-gray-800 mt-4 text-center">Expansion (SAM)</h4>
+                    <p class="text-4xl font-extrabold text-teal-800 mt-2 text-center">€5-7B</p>
+                    <p class="text-sm text-gray-500 text-center mb-6 font-semibold">OECD Higher Ed & Corporate R&D</p>
+                    <ul class="space-y-3 text-sm text-gray-600 flex-grow">
+                        <li class="flex items-start"><span class="text-teal-700 mr-2">&#9679;</span> <strong>Target:</strong> 13M researchers + R&D teams.</li>
+                        <li class="flex items-start"><span class="text-teal-700 mr-2">&#9679;</span> <strong>Strategy:</strong> Convert high-usage universities into enterprise accounts.</li>
+                        <li class="flex items-start"><span class="text-teal-700 mr-2">&#9679;</span> <strong>Goal:</strong> Institutional standard.</li>
+                    </ul>
+                </div>
+                <div class="market-card p-8 rounded-xl border-t-4 border-gray-800 relative h-full flex flex-col mt-8 md:mt-0 opacity-90">
+                    <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">Phase 3</div>
+                    <h4 class="text-xl font-bold text-gray-800 mt-4 text-center">Global Standard (TAM)</h4>
+                    <p class="text-4xl font-extrabold text-gray-800 mt-2 text-center">€20B+</p>
+                    <p class="text-sm text-gray-500 text-center mb-6 font-semibold">Global Discovery Software</p>
+                    <ul class="space-y-3 text-sm text-gray-600 flex-grow">
+                        <li class="flex items-start"><span class="text-gray-800 mr-2">&#9679;</span> <strong>Target:</strong> €3.1T global R&D spend.</li>
+                        <li class="flex items-start"><span class="text-gray-800 mr-2">&#9679;</span> <strong>Strategy:</strong> The “OS for discovery”.</li>
+                        <li class="flex items-start"><span class="text-gray-800 mr-2">&#9679;</span> <strong>Note:</strong> 1% R&D waste reduction unlocks €31B.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 11. BUSINESS MODEL -->
+        <section id="business-model" class="mb-24 md:mb-32 scroll-mt-20">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Go-to-Market & Revenue Model</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We use a "Land & Expand" strategy: Individual adoption drives institutional sales.</p>
+                <div class="mt-6 inline-flex items-center bg-teal-50 border border-teal-200 px-6 py-3 rounded-full">
+                    <span class="text-teal-600 font-bold mr-2">The Flywheel:</span>
+                    <span class="text-gray-700 text-sm font-medium">Student usage → Data proof → Institutional license sale</span>
+                </div>
+            </div>
+             <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="model-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">👤</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800">Individual (B2C)</h4>
+                    <p class="text-sm text-gray-500 font-semibold mb-2">Bottom-Up Engine</p>
+                    <p class="text-3xl font-extrabold text-teal-700 mt-1">€19.90<span class="text-base font-normal text-gray-500">/mo</span></p>
+                    <ul class="space-y-3 text-sm text-gray-600 text-left flex-grow mt-6">
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#10004;</span> <strong>Role:</strong> Viral adoption.</li>
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#10004;</span> <strong>Customer:</strong> Students / Researchers.</li>
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#10004;</span> <strong>Benefit:</strong> Creates internal pull for university licenses.</li>
+                    </ul>
+                </div>
+                <div class="model-card p-8 rounded-xl border-2 border-teal-600 relative flex flex-col h-full transform md:-translate-y-2 shadow-xl">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-teal-600 text-white px-3 py-1 rounded text-xs font-bold uppercase">Primary Revenue</div>
+                    <div class="bg-teal-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">🏛️</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800">Academic Licenses</h4>
+                    <p class="text-3xl font-extrabold text-teal-700 mt-3">€10-50k<span class="text-base font-normal text-gray-500">/yr</span></p>
+                    <ul class="space-y-3 text-sm text-gray-600 text-left flex-grow mt-6">
+                        <li class="flex items-start"><span class="text-teal-600 mr-2">&#10004;</span> <strong>Role:</strong> High-LTV recurring revenue.</li>
+                        <li class="flex items-start"><span class="text-teal-600 mr-2">&#10004;</span> <strong>Customer:</strong> Libraries / Faculties.</li>
+                        <li class="flex items-start"><span class="text-teal-600 mr-2">&#10004;</span> <strong>Benefit:</strong> Sold using activation + usage data.</li>
+                    </ul>
+                </div>
+                <div class="model-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">🏢</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800">Corporate R&D</h4>
+                    <p class="text-sm text-gray-500 font-semibold mb-2">Enterprise Upsell</p>
+                    <p class="text-3xl font-extrabold text-teal-700 mt-1">Custom</p>
+                    <ul class="space-y-3 text-sm text-gray-600 text-left flex-grow mt-6">
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#10004;</span> <strong>Role:</strong> High-margin expansion.</li>
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#10004;</span> <strong>Customer:</strong> Pharma / Biotech / Tech.</li>
+                        <li class="flex items-start"><span class="text-teal-500 mr-2">&#10004;</span> <strong>Benefit:</strong> Private deployments + API integrations.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+         <!-- 12. WHY NOW -->
+         <section id="why-now" class="mb-24 md:mb-32 scroll-mt-20">
+             <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Why Now? The "Integrity" Tipping Point</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">
+                    The market has moved from "wanting AI" to "needing safe AI." Generalist tools created a problem that only specialized engines can solve.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="why-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="bg-teal-50 w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <span class="text-2xl">🛡️</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800">The "Hallucination" Crisis</h4>
+                    <p class="mt-3 text-gray-600 leading-relaxed flex-grow">
+                        Universities are banning generalist LLMs due to fake citations. They are desperately seeking a <strong>grounded, citation-backed</strong> AI infrastructure to ensure academic integrity.
+                    </p>
+                </div>
+                <div class="why-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="bg-teal-50 w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <span class="text-2xl">📉</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800">The Efficiency Squeeze</h4>
+                    <p class="mt-3 text-gray-600 leading-relaxed flex-grow">
+                        R&D inflation is outpacing budgets. Labs can no longer afford to pay PhDs for 20 hours/week of manual searching. Efficiency tools have shifted from "nice-to-have" to <strong>mandatory</strong>.
+                    </p>
+                </div>
+                <div class="why-card p-8 rounded-xl flex flex-col h-full">
+                    <div class="bg-teal-50 w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <span class="text-2xl">🌊</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-800">The Publication Flood</h4>
+                    <p class="mt-3 text-gray-600 leading-relaxed flex-grow">
+                        Global research output now doubles every 9 years. The era of "manual review" is mathematically over. An <strong>AI-first discovery engine</strong> is the inevitable new standard.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 13. TEAM (RESTORED) -->
         <section id="team" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
                 <h3 class="text-3xl md:text-4xl font-bold text-gray-800">An Experienced & Passionate Team</h3>
             </div>
-
             <p class="text-center text-lg text-gray-700 max-w-4xl mx-auto mb-8 italic">A team built at the intersection of research, AI, and education-driven by lived experience of the problem.</p>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Maci's Card - UPDATED -->
                 <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
-                     <img src="https://media.licdn.com/dms/image/v2/D4E03AQGPbOJ52V6Ong/profile-displayphoto-scale_400_400/B4EZgzw6pgGcAg-/0/1753215118633?e=1763596800&v=beta&t=ao-fPDzHunyHlhH1dwn_zT4HVQPgC8iiqQs3Eu5gdDU" alt="Maci Mechiche" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://placehold.co/200x200/f0fdfa/0d9488?text=MM'; this.onerror=null;">
+                     <img src="https://placehold.co/400x400/f0fdfa/0d9488?text=MM" alt="Maci Mechiche" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
                      <h4 class="text-lg font-bold text-gray-800">Maci Mechiche</h4>
                      <p class="text-teal-700 font-semibold">Founder/CEO</p>
-                     <p class="text-sm text-gray-600 mt-3">Master's in Industrial Management, published academic, and former business development leader.</p>
-                     <p class="text-sm text-teal-700 mt-3 font-semibold border-t border-stone-200 pt-3">Scaled Aveksana to 23k+ users with $0 marketing spend.</p>
+                     <p class="text-sm text-gray-600 mt-3">Published researcher who felt the problem first-hand. <strong class="text-gray-800 block mt-1">Scaled Aveksana to 22,000+ users with $0 marketing spend.</strong></p>
                 </div>
-                <!-- Surya's Card - UPDATED (IMAGE SRC FIXED) -->
                  <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
-                    <img src="https://media.licdn.com/dms/image/v2/C4E03AQGlxIxsrRsJoA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1517259520939?e=1763596800&v=beta&t=OFGU3ElVKLTsWhnuNSavNJA2baZVcTizeQA4x-66caY" alt="Surya Yadav" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://placehold.co/200x200/f0fdfa/0d9488?text=SY'; this.onerror=null;">
+                    <img src="https://placehold.co/400x400/f0fdfa/0d9488?text=SY" alt="Surya Yadav" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
                      <h4 class="text-lg font-bold text-gray-800">Surya Yadav</h4>
                      <p class="text-teal-700 font-semibold">Founder/COO</p>
-                     <p class="text-sm text-gray-600 mt-3">Two Master's degrees in Industrial Engineering & Business. Former Product Lead at eSend.</p>
-                     <p class="text-sm text-teal-700 mt-3 font-semibold border-t border-stone-200 pt-3">Built the product funnel, achieving our 21.2% activation-to-paid CVR.</p>
+                     <p class="text-sm text-gray-600 mt-3">Two Master's in Engineering & Business. <strong class="text-gray-800 block mt-1">Led the product strategy that achieved our 21.2% activation-to-paid CVR.</strong></p>
                 </div>
-                <!-- Phong's Card - UPDATED (IDEATION ENGINE) -->
                  <div class="team-card bg-white p-6 rounded-xl border border-stone-200 text-center">
-                    <img src="https://media.licdn.com/dms/image/v2/C4D03AQE627bdsIf95Q/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1539352572647?e=1763596800&v=beta&t=uDJ0M1Y1Fl-PdomPoAA2qV5mIagRafAG0vLySolgXiY" alt="Phong Hai Nguyen" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://placehold.co/200x200/f0fdfa/0d9488?text=PN'; this.onerror=null;">
+                    <img src="https://placehold.co/400x400/f0fdfa/0d9488?text=PHN" alt="Phong Hai Nguyen" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
                      <h4 class="text-lg font-bold text-gray-800">Phong Hai Nguyen</h4>
                      <p class="text-teal-700 font-semibold">Co-founder/AI</p>
-                     <p class="text-sm text-gray-600 mt-3">Master's in CS. Specializes in applying advanced AI to real-world challenges. Former AI Specialist.</p>
-                     <p class="text-sm text-teal-700 mt-3 font-semibold border-t border-stone-200 pt-3">Built our proprietary Ideation engine & knowledge graph from 500M+ research articles.</p>
+                     <p class="text-sm text-gray-600 mt-3">Master's in CS. <strong class="text-gray-800 block mt-1">Architected the AI engine and 500M+ article knowledge graph</strong> that powers our core validation feature.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ===== SECTION: ADVISORS (AMAN REMOVED, GRID ADJUSTED, URL FIXED) ===== -->
+        <!-- 14. ADVISORS -->
         <section id="advisors" class="mb-24 md:mb-32 scroll-mt-20">
             <div class="text-center mb-12">
                 <h3 class="text-3xl md:text-4xl font-bold text-gray-800">Backed by Industry Experts</h3>
                 <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">Our advisors bring decades of experience in software engineering, AI, and scaling global edtech ventures.</p>
             </div>
-            <!-- Adjusted grid to center the remaining two advisors -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <div class="advisor-card bg-white p-6 rounded-xl border border-stone-200 text-center">
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQFCJJLUB2SP4g/profile-displayphoto-scale_400_400/B4DZh1M6uxGsAk-/0/1754312977948?e=1763596800&v=beta&t=ThQaJ1qGhnR2bmpjFkNEJbsERAWVj-gJ7puvEFZ80o0" alt="Pekka Abrahamsson" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='https://placehold.co/200x200/f0fdfa/0d9488?text=PA'; this.onerror=null;">
+                    <img src="https://placehold.co/400x400/f0fdfa/0d9488?text=PA" alt="Pekka Abrahamsson" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
                     <h4 class="text-lg font-bold text-gray-800">Pekka Abrahamsson</h4>
                     <p class="text-teal-700 font-semibold">Product & University GTM Advisor</p>
                     <p class="text-sm text-gray-600 mt-3">Professor of Software Engineering at Tampere University. Advising with Product Development and Diffusion in universities.</p>
                 </div>
                 <div class="advisor-card bg-white p-6 rounded-xl border border-stone-200 text-center">
-                    <!-- FIXED BROKEN URL HERE -->
-                    <img src="https://media.licdn.com/dms/image/v2/D4D03AQFTfzCHTvuRvw/profile-displayphoto-shrink_400_400/B4DZahTQQ.H0Ak-/0/1746462901926?e=1763596800&v=beta&t=dR8p6wo21UTB0TzzM8iWjWNroAO_kxgSyhhwhup9H0Y" alt="Anna-Riikka Smolander" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" onerror="this.src='httpsS://placehold.co/200x200/f0fdfa/0d9488?text=AS'; this.onerror=null;">
+                    <img src="https://placehold.co/400x400/f0fdfa/0d9488?text=AS" alt="Anna-Riikka Smolander" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
                     <h4 class="text-lg font-bold text-gray-800">Anna-Riikka Smolander</h4>
                     <p class="text-teal-700 font-semibold">AI Strategy & EdTech Advisor</p>
                     <p class="text-sm text-gray-600 mt-3">EC Digital Europe AI specialist and former edtech CEO. Advising on AI strategy and global edtech expansion.</p>
@@ -616,53 +661,58 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
             </div>
         </section>
 
-        <!-- ===== SECTION: ASK (CLEANED) ===== -->
+        <!-- 15. ASK -->
         <section id="ask" class="scroll-mt-20">
              <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The Investment</h3>
+                <h3 class="text-3xl md:text-4xl font-bold text-gray-800">The Investment Opportunity</h3>
+                <p class="mt-3 text-lg text-gray-600 max-w-4xl mx-auto">We are raising a seed round to accelerate our beachhead strategy and validate the enterprise model.</p>
             </div>
-            <div class="bg-white border-2 border-teal-600 rounded-xl shadow-2xl overflow-hidden">
-                <div class="p-8 bg-teal-600 text-white text-center">
-                    <h4 class="text-2xl font-semibold">We are raising €800k in a Seed Equity Round</h4>
-                    <p class="opacity-80">(Note: €8M pre-money valuation)</p>
+            
+            <div class="bg-white border border-stone-200 rounded-xl shadow-2xl overflow-hidden">
+                <div class="p-8 bg-teal-700 text-white text-center">
+                    <h4 class="text-3xl font-bold">Seeking €800k Seed Equity</h4>
+                    <p class="opacity-90 mt-2 font-medium">To achieve €330k ARR and Series A readiness in 18 months.</p>
                 </div>
                 <div class="grid md:grid-cols-2">
-                     <div class="p-8">
-                        <h5 class="text-xl font-bold text-gray-800 mb-4">Use of Funds</h5>
+                     <div class="p-8 border-b md:border-b-0 md:border-r border-stone-200 flex flex-col justify-center">
+                        <h5 class="text-xl font-bold text-gray-800 mb-6 text-center">Capital Allocation</h5>
                         <div class="chart-container">
                              <canvas id="useOfFundsChart"></canvas>
                         </div>
+                        <div class="mt-8 text-center text-sm text-gray-500">
+                            <p><strong>Note:</strong> 50% of funds are dedicated to GTM to fuel our B2C &rarr; B2B flywheel.</p>
+                        </div>
                     </div>
-                    <!-- FIXED TYPO: classs= to class= -->
                     <div class="p-8 bg-stone-50">
-                        <h5 class="text-xl font-bold text-gray-800 mb-4">To Achieve in 15-18 Months:</h5>
-                        <ul class="space-y-4">
-                            <li class="flex items-start">
-                                <span class="text-teal-600 font-bold mr-3">&#10003;</span>
-                                <div><span class="font-semibold text-gray-700">Reach ~€330k in ARR:</span> By converting our B2B pilot pipeline and scaling our B2C engine.</div>
-                            </li>
-                            <li class="flex items-start">
-                               <span class="text-teal-600 font-bold mr-3">&#10003;</span>
-                                <div><span class="font-semibold text-gray-700">10+ New University Partners:</span> Convert existing pipeline and establish a beachhead in Northern Europe.</div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-teal-600 font-bold mr-3">&#10003;</span>
-                                <div><span class="font-semibold text-gray-700">Grow B2C engine to 100k+ Users:</span> Continue scaling our efficient organic B2C engine.</div>
-                            </li>
-                             <li class="flex items-start">
-                                <span class="text-teal-600 font-bold mr-3">&#10003;</span>
-                                <div><span class="font-semibold text-gray-700">Launch 'Artha' Pilots:</span> Secure 1-2 strategic paid pilots for our R&D product.</div>
-                            </li>
-                        </ul>
+                        <h5 class="text-xl font-bold text-gray-800 mb-6">Execution Roadmap (18 Months)</h5>
+                        <div class="relative border-l-2 border-teal-200 ml-3 space-y-8 pl-8 pb-2">
+                            <div class="relative">
+                                <div class="absolute -left-10 bg-teal-100 border-2 border-teal-600 w-5 h-5 rounded-full mt-1.5"></div>
+                                <p class="text-xs font-bold text-teal-600 uppercase tracking-wide mb-1">Month 6</p>
+                                <h6 class="font-bold text-gray-800 text-lg">Launch 'Artha' Pilots</h6>
+                                <p class="text-sm text-gray-600 mt-1">Secure 1-2 strategic paid pilots for our Corporate R&D product to validate high-ticket pricing.</p>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-10 bg-teal-100 border-2 border-teal-600 w-5 h-5 rounded-full mt-1.5"></div>
+                                <p class="text-xs font-bold text-teal-600 uppercase tracking-wide mb-1">Month 12</p>
+                                <h6 class="font-bold text-gray-800 text-lg">Scale the Beachhead</h6>
+                                <p class="text-sm text-gray-600 mt-1">Grow B2C engine to <strong>100k+ users</strong>. Convert usage data into <strong>10+ University Partners</strong> in Northern Europe.</p>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-10 bg-teal-600 border-2 border-teal-600 w-5 h-5 rounded-full mt-1.5"></div>
+                                <p class="text-xs font-bold text-teal-600 uppercase tracking-wide mb-1">Month 18</p>
+                                <h6 class="font-bold text-gray-800 text-lg">Series A Ready</h6>
+                                <p class="text-sm text-gray-600 mt-1">Reach <strong>~€330k ARR</strong> with a proven, repeatable sales motion and a data-defensible moat.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- UPDATED CLOSING TEXT -->
-            <p class="mt-12 text-center text-xl text-gray-700 font-semibold italic">
+            <p class="mt-16 text-center text-xl text-gray-700 font-semibold italic max-w-3xl mx-auto">
                 "The next breakthrough is waiting. Aveksana is the engine that will fuel it.
                 <br>
                 Join us in accelerating discovery worldwide."
-            </Two>
+            </p>
         </section>
 
     </main>
@@ -673,10 +723,37 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
         </div>
     </footer>
 
-    <!-- ===== SCRIPT (USER AND FUNDING COUNTERS UPDATED) ===== -->
+    <!-- ===== SCRIPT ===== -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             
+            // Fallback for images
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', function() {
+                    if (!this.src.includes('placehold.co')) {
+                        const altText = this.alt || 'Image';
+                        this.src = `https://placehold.co/600x400/f3f4f6/9ca3af?text=${encodeURIComponent(altText)}`;
+                    }
+                });
+            });
+
+            // Mobile Menu Logic
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                
+                // Close menu when a link is clicked
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            }
+
             const useOfFundsCtx = document.getElementById('useOfFundsChart');
             if (useOfFundsCtx) {
                 new Chart(useOfFundsCtx, {
@@ -725,54 +802,30 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
                 });
             }
 
-            // Fixed Counter Logic
             const counterObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) { // <--- TYPO FIX IS HERE
+                    if (entry.isIntersecting) {
                         const el = entry.target;
                         const target = parseInt(el.dataset.counterTarget, 10);
                         const prefix = el.dataset.prefix || '';
                         const suffix = el.dataset.suffix || '';
                         let current = 0;
-                        const duration = 1500; // Faster animation
-                        const stepTime = 15;
+                        const duration = 2000;
+                        const stepTime = 20;
                         const steps = duration / stepTime;
-                        let increment = target / steps;
+                        const increment = target / steps;
                         
-                        // Handle very small increments
-                        if (increment < 1) {
-                            increment = 1;
-                        }
-
                         const timer = setInterval(() => {
                             current += increment;
                             if (current >= target) {
                                 current = target;
                                 clearInterval(timer);
                             }
-                            
                             let displayValue = Math.ceil(current).toLocaleString();
-                            
-                            // Handle special formatting cases
-                            if (el.dataset.counterTarget === "238000") {
-                                displayValue = (Math.ceil(current / 1000)).toLocaleString() + 'k+';
-                                el.textContent = prefix + displayValue;
-                            } else if (el.dataset.counterTarget === "23000") { // UPDATED FROM 22000
-                                displayValue = (Math.ceil(current / 1000)).toLocaleString() + 'k+';
-                                el.textContent = displayValue;
-                            } else if (el.dataset.counterTarget === "3000") {
-                                // Specific format for "€3,000+"
-                                displayValue = (Math.ceil(current / 1000)).toLocaleString() + ',000+';
-                                el.textContent = prefix + displayValue;
-                            } else if (el.dataset.counterTarget === "80000") { // UPDATED FROM 88000
-                                // Specific format for "€80,000"
-                                displayValue = (Math.ceil(current / 1000)).toLocaleString() + ',000';
-                                el.textContent = prefix + displayValue;
-                            } else {
-                                // Default case for other counters (like 40%)
-                                el.textContent = prefix + displayValue + suffix;
+                            if (suffix === 'k+') {
+                                displayValue = (Math.ceil(current) / 1000).toLocaleString() + 'k+';
                             }
-
+                            el.textContent = prefix + displayValue + suffix.replace('k+','');
                         }, stepTime);
 
                         observer.unobserve(el);
@@ -783,7 +836,6 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
             document.querySelectorAll('[data-counter-target]').forEach(counter => {
                 counterObserver.observe(counter);
             });
-
 
             const navLinks = document.querySelectorAll('.nav-link');
             const sections = document.querySelectorAll('section[id]');
@@ -804,5 +856,4 @@ Aveksana is building the Discovery Engine, transforming how Academia and Corpora
         });
     </script>
 </body>
-
 </html>
